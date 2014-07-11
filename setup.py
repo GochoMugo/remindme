@@ -15,14 +15,14 @@ import remindme
 
 
 setup(
-    name="RemindMe",
+    name="remindme",
     version=remindme.__version__,
     author="Gocho Mugo I",
     author_email="gochomugo.developer@gmail.com",
-    url="https://gochomugo.github.io/RemindMe/",
-    download_url="https://github.com/GochoMugo/RemindMe/zipball/master",
+    url="https://gochomugo.github.io/remindme/",
+    download_url="https://github.com/GochoMugo/remindme/zipball/master",
     description="Command Line Application for reminding you of somethings",
-    keywords=["remind", "remember", "cli"],
+    keywords=["remindme", "remind", "remember", "cli"],
     license="MIT",
     long_description=__doc__,
     classifiers=[
@@ -38,6 +38,7 @@ setup(
     ],
     packages=["remindme"],
     install_requires=[
+        "argparse",
         "colorama"
     ]
 )
