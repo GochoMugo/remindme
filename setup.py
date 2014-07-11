@@ -40,5 +40,10 @@ setup(
     install_requires=[
         "argparse",
         "colorama"
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'remindme = remindme.remindme:run',
+        ]
+    }
 )
