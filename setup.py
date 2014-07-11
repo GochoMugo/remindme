@@ -7,7 +7,7 @@ make RemindMe show you the content.
 
 Licensed under the MIT License. For Open Source Initiative (OSI)
 
-Contribute to the Project at https://github.com/GochoMugo/RemindMe/
+Contribute to the Project at https://github.com/GochoMugo/remindme
 '''
 
 from distutils.core import setup
@@ -26,7 +26,7 @@ setup(
     license="MIT",
     long_description=__doc__,
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 4 - Beta",
         "Environment :: Console",
         "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved",
@@ -34,7 +34,11 @@ setup(
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
+        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4"
     ],
     packages=["remindme"],
     install_requires=[

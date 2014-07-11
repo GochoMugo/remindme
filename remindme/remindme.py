@@ -12,7 +12,7 @@ import json
 import os
 import sys
 
-__version__ = '0.0.0'
+__version__ = '0.0.1'
 home = os.path.expanduser('~')
 storage_file = os.path.join(home, '.remindme')
 _default = colorama.Fore.WHITE
