@@ -10,6 +10,7 @@ import argparse
 import colorama
 import json
 import os
+import sys
 
 __version__ = '0.0.0'
 home = os.path.expanduser('~')
@@ -57,8 +58,10 @@ def add(content, keyword, new_content):
         'keyword': keyword,
         'content': new_content
     }
-    content.append(item)
-    return write(content)
+    if not search(content, keyword):
+        content.append(item)
+        return write(content)
+    return False
 
 
 def remove(content, keyword):
@@ -81,14 +84,14 @@ def arg_parser():
                         help='Keyword to remind me something I knew')
     parser.add_argument('-l', '--list',
                         action='store_true',
-                        help='List all RemindMe keywords')
+                        help='list all RemindMe keywords')
     parser.add_argument('-a', '--add',
                         metavar='keywords',
                         dest='add', nargs='+',
-                        help='Add new RemindMe content')
+                        help='add new RemindMe content')
     parser.add_argument('-r', '--remove',
                         dest='remove', nargs='+',
-                        help='Remove a RemindMe')
+                        help='remove a RemindMe')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(__version__))
@@ -121,11 +124,16 @@ def run():
 
     if args['add']:
         keyword = ' '.join(args['add'])
-        new_content = raw_input('Enter what you remember now:\n')
+        prompt = 'Enter what you remember now:\n\n>{0}'.format(_default)
+        if sys.version_info.major < 3:
+            new_content = raw_input(prompt)
+        else:
+            new_content = input(prompt)
         if add(content, keyword, new_content):
             print_out(_success, 'RemindMe will remind you next time')
         else:
-            print_out(_error, 'RemindMe failed to get that in memory')
+            print_out(_error, 'RemindMe failed to get that in memory.\n\
+Maybe there is already another RemindMe with the same keyword.')
 
     if args['remove']:
         keyword = ' '.join(args['remove'])
