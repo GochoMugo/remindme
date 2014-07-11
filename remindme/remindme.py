@@ -36,7 +36,6 @@ def read():
 
 def write(content):
     with open(storage_file, 'w') as storage:
-        content.sort()
         content = json.dumps(content, indent=4)
         storage.write(content)
         return True
@@ -79,17 +78,17 @@ def arg_parser():
     )
     parser.add_argument('keywords',
                         metavar='KEYWORDS', nargs='*',
-                        help='Remindme something I knew')
+                        help='Keyword to remind me something I knew')
     parser.add_argument('-l', '--list',
                         action='store_true',
-                        help='List all remindme keywords')
+                        help='List all RemindMe keywords')
     parser.add_argument('-a', '--add',
                         metavar='keywords',
                         dest='add', nargs='+',
-                        help='Add new remindme content')
+                        help='Add new RemindMe content')
     parser.add_argument('-r', '--remove',
                         dest='remove', nargs='+',
-                        help='Remove a remindme')
+                        help='Remove a RemindMe')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(__version__))
@@ -109,11 +108,15 @@ def run():
     content = read()
 
     if args['list']:
-        print_out(_success, 'Found {0} remindme keywords'.format(
+        print_out(_success, 'Found {0} remindme keywords\b'.format(
             len(content))
         )
+        keywords = []
         for item in content:
-            print(item['keyword'])
+            if 'keyword' in item:
+                keywords.append(item['keyword'])
+        keywords.sort()
+        print_out(_default, '\n'.join(keywords))
         return
 
     if args['add']:
@@ -136,7 +139,7 @@ the keywords really exist with me.')
         keyword = ' '.join(args['keywords'])
         results = search(content, keyword)
         if results:
-            print_out(_success, 'RemindMe Reminding you:\n')
+            print_out(_success, 'RemindMe Reminding you:')
             print_out(_default, results)
         else:
             print_out(_error, 'RemindMe: I too can\'t rember that')

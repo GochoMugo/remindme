@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/python3.2
 
 '''
 Unit Testing for RemindMe
