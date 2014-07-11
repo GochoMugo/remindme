@@ -28,13 +28,13 @@ I must not forget the formula for Water, but if I do, please tell me about it. I
 
 ## Get Started ##
 
-Installing:
+**Installing**:
 
-    `$ pip install remindme`
+`$ pip install remindme`
 
-Upgrading:
+**Upgrading**:
 
-    `$ pip install upgrade remindme`
+`$ pip install upgrade remindme`
 
 ## Usage ##
 
@@ -50,13 +50,13 @@ positional arguments:
   KEYWORDS              Keyword to remind me something I knew
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -l, --list               list all RemindMe keywords
-  -a keywords [keywords ...], --add keywords [keywords ...]
-                            add new RemindMe content
+    -h, --help           show this help message and exit
+    -l, --list              list all RemindMe keywords
+    -a keywords [keywords ...], --add keywords [keywords ...]
+                              add new RemindMe content
   -r REMOVE [REMOVE ...], --remove REMOVE [REMOVE ...]
-                            remove a RemindMe
-  -v, --version      show program's version number and exit
+                              remove a RemindMe
+    -v, --version      show program's version number and exit
 
 ```
 
@@ -75,3 +75,6 @@ If you find a bug, please create an [issue][issues] and I (with you, ofcourse) w
 ## License ##
 
 The Application and its Source Code is issued under the [MIT License].
+
+[issues]:https://github.com/GochoMugo/remindme/issues "Create an Issue"
+[MIT License]:https://github.com/GochoMugo/remindme/blob/master/LICENSE "MIT License"
