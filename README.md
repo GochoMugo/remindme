@@ -51,11 +51,11 @@ positional arguments:
 
 optional arguments:
     -h, --help           show this help message and exit
-    -l, --list              list all RemindMe keywords
+    -l, --list          list all RemindMe keywords
     -a keywords [keywords ...], --add keywords [keywords ...]
-                              add new RemindMe content
+                          add new RemindMe content
   -r REMOVE [REMOVE ...], --remove REMOVE [REMOVE ...]
-                              remove a RemindMe
+                          remove a RemindMe
     -v, --version      show program's version number and exit
 
 ```
@@ -64,7 +64,7 @@ optional arguments:
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.0.0|
+|Version| 0.0.1|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
 |Last Upgrade|11th July, 2014|
 
