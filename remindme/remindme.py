@@ -12,7 +12,7 @@ import json
 import os
 import sys
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 home = os.path.expanduser('~')
 storage_file = os.path.join(home, '.remindme')
 _default = colorama.Fore.WHITE
@@ -68,10 +68,9 @@ def remove(content, keyword):
     if search(content, keyword):
         newContent = []
         for item in content:
-            if 'keyword' in item:
-                if item['keyword'] != keyword:
-                    newContent.append(item)
-        return write(content)
+            if item['keyword'] != keyword:
+                newContent.append(item)
+        return write(newContent)
     return False
 
 

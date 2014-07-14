@@ -34,7 +34,7 @@ I must not forget the formula for Water, but if I do, please tell me about it. I
 
 **Upgrading**:
 
-`$ pip install upgrade remindme`
+`$ pip install --upgrade remindme`
 
 ## Usage ##
 
