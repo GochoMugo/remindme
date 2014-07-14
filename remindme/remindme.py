@@ -68,8 +68,9 @@ def remove(content, keyword):
     if search(content, keyword):
         newContent = []
         for item in content:
-            if item['keyword'] != keyword:
-                newContent.append(item)
+            if 'keyword' in item:
+                if item['keyword'] != keyword:
+                    newContent.append(item)
         return write(newContent)
     return False
 
