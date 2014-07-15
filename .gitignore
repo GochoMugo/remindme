@@ -1,3 +1,4 @@
-test.py
 *.py[doc]
 dist
+test.py
+TODO

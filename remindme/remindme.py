@@ -8,13 +8,13 @@ Copyright (c) 2014 GOCHO MUGO I.
 
 import argparse
 import colorama
-import json
 import os
+import sqlite3
 import sys
 
 __version__ = '0.0.2'
 home = os.path.expanduser('~')
-storage_file = os.path.join(home, '.remindme')
+db_file = os.path.join(home, '.remindme.db')
 _default = colorama.Fore.WHITE
 _error = colorama.Fore.RED
 _priority = colorama.Fore.MAGENTA
@@ -23,22 +23,30 @@ _success = colorama.Fore.GREEN
 
 
 def read():
-    try:
-        with open(storage_file, 'r') as storage:
-            content = storage.read()
-            content = json.loads(content)
-            return content
-    except IOError:
-        with open(storage_file, 'w') as storage:
-                content = json.dumps([])
-                content = storage.write(content)
-                return []
+    content = []
+    with sqlite3.connect(db_file) as db:
+        cursor = db.cursor()
+        try:
+            sql = 'SELECT keyword, content FROM remindmes'
+            for item in cursor.execute(sql).fetchall():
+                content.append({
+                    'keyword': item[0],
+                    'content': item[1]
+                })
+        except sqlite3.OperationalError:
+            sql = 'CREATE TABLE remindmes(keyword, content)'
+            cursor.execute(sql)
+            db.commit()
+    return content
 
 
 def write(content):
-    with open(storage_file, 'w') as storage:
-        content = json.dumps(content, indent=4)
-        storage.write(content)
+    with sqlite3.connect(db_file) as db:
+        cursor = db.cursor()
+        sql = 'INSERT INTO remindmes VALUES (?,?)'
+        for item in content:
+            cursor.execute(sql, (item['keyword'], item['content']))
+        db.commit()
         return True
     return False
 
@@ -71,6 +79,8 @@ def remove(content, keyword):
             if 'keyword' in item:
                 if item['keyword'] != keyword:
                     newContent.append(item)
+        if newContent == content:
+            return False
         return write(newContent)
     return False
 
