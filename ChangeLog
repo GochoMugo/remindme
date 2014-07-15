@@ -2,3 +2,4 @@ Version 0.0.2
 --------------
 =   -r/--remove failing to remove remindme, fixed.
 =   typo in README, fixed.
++   keywords and content stored in sqlite3 database
