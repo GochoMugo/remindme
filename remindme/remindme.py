@@ -22,67 +22,67 @@ _reset = colorama.Style.RESET_ALL
 _success = colorama.Fore.GREEN
 
 
-def read():
+def read(db_file=db_file):
     content = []
     with sqlite3.connect(db_file) as db:
         cursor = db.cursor()
         try:
             sql = 'SELECT keyword, content FROM remindmes'
             for item in cursor.execute(sql).fetchall():
-                content.append({
-                    'keyword': item[0],
-                    'content': item[1]
-                })
+                content.append(item)
         except sqlite3.OperationalError:
-            sql = 'CREATE TABLE remindmes(keyword, content)'
-            cursor.execute(sql)
-            db.commit()
+            try:
+                sql = 'CREATE TABLE remindmes(keyword, content)'
+                cursor.execute(sql)
+                sql = 'CREATE UNIQUE INDEX keys ON remindmes(keyword)'
+                cursor.execute(sql)
+                db.commit()
+            except:
+                db.rollback()
     return content
 
 
-def write(content):
+def write(keyword, content, db_file=db_file):
     with sqlite3.connect(db_file) as db:
-        cursor = db.cursor()
-        sql = 'INSERT INTO remindmes VALUES (?,?)'
-        for item in content:
-            cursor.execute(sql, (item['keyword'], item['content']))
-        db.commit()
-        return True
+        try:
+            cursor = db.cursor()
+            sql = 'INSERT INTO remindmes VALUES (?,?)'
+            cursor.execute(sql, (keyword, content,))
+            db.commit()
+            return True
+        except:
+            db.rollback()
+            return True
     return False
 
 
 def search(content, keyword):
     for item in content:
-        if 'keyword' in item:
-            if keyword in item['keyword']:
-                if 'content' in item:
-                    return item['content']
-                return 'ReadMe: Content is Corrupted'
+        if item[0] == keyword:
+            return item[1]
     return False
 
 
-def add(content, keyword, new_content):
-    item = {
-        'keyword': keyword,
-        'content': new_content
-    }
+def add(content, keyword, new_content, db_file):
     if not search(content, keyword):
-        content.append(item)
-        return write(content)
+        return write(keyword, new_content, db_file)
     return False
 
 
-def remove(content, keyword):
+def remove(content, keyword, db_file=db_file):
     if search(content, keyword):
-        newContent = []
-        for item in content:
-            if 'keyword' in item:
-                if item['keyword'] != keyword:
-                    newContent.append(item)
-        if newContent == content:
+        try:
+            with sqlite3.connect(db_file) as db:
+                sql = 'DELETE FROM remindmes WHERE keyword == "{0}"'
+                sql = sql.format(keyword)
+                db.execute(sql)
+                db.commit()
+                return True
+        except:
+            db.rollback()
             return False
-        return write(newContent)
-    return False
+    else:
+        return False
 
 
 def arg_parser():
@@ -124,10 +124,7 @@ def run():
         print_out(_success, 'Found {0} remindme keywords\b'.format(
             len(content))
         )
-        keywords = []
-        for item in content:
-            if 'keyword' in item:
-                keywords.append(item['keyword'])
+        keywords = [item[0] for item in content]
         keywords.sort()
         print_out(_default, '\n'.join(keywords))
         return

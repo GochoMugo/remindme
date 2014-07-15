@@ -43,7 +43,7 @@ setup(
     packages=["remindme"],
     install_requires=[
         "argparse",
-        "colorama"
+        "colorama",
     ],
     entry_points={
         'console_scripts': [
