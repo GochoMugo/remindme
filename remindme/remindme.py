@@ -12,7 +12,7 @@ import os
 import sqlite3
 import sys
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 home = os.path.expanduser('~')
 db_file = os.path.join(home, '.remindme.db')
 _default = colorama.Fore.WHITE
@@ -63,7 +63,7 @@ def search(content, keyword):
     return False
 
 
-def add(content, keyword, new_content, db_file):
+def add(content, keyword, new_content, db_file=db_file):
     if not search(content, keyword):
         return write(keyword, new_content, db_file)
     return False

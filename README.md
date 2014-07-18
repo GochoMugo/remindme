@@ -64,9 +64,9 @@ optional arguments:
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.0.2|
+|Version| 0.0.3|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|15th July, 2014|
+|Last Upgrade|18th July, 2014|
 
 ## More ##
 
