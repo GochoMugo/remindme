@@ -1,4 +1,4 @@
-.PHONY: tests, clean
+.PHONY: dist, tests, clean
 
 dist: setup.py remindme
 	cp README.md README.txt

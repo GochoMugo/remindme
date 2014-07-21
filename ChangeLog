@@ -1,3 +1,7 @@
+Version 0.0.3
+--------------
+=   fixed missing parameter while adding a remindme from commandline
+
 Version 0.0.2
 --------------
 =   -r/--remove failing to remove remindme, fixed.
