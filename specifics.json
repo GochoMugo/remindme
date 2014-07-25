@@ -1,0 +1,44 @@
+{
+    "author": {
+        "name": "GochoMugo",
+        "url": "https://gochomugo.github.io"
+    }, 
+    "maintainer": {
+        "name":  "GochoMugo", 
+        "url": "https://gochomugo.github.io"
+    },
+    "projectName": "remindme", 
+    "version": "0.0.3", 
+    "lastUpdated": "25th July, 2014", 
+    "tarball": {
+        "icon": "fa fa-download",
+        "url": "https://github.com/GochoMugo/remindme/tarball/master"
+    },
+    "zipfile": {
+        "icon": "fa fa-file",
+        "url": "https://github.com/GochoMugo/remindme/zipball/master"
+    },
+    "githubRepo": {
+        "icon": "fa fa-github",
+        "url": "https://github.com/GochoMugo"
+    },
+    "projectSite": {
+        "icon": "fa fa-book",
+        "url": "https://gochomugo.github.io/remindme" 
+    },
+    "facebook": {
+        "icon": "fa fa-facebook",
+        "url": null
+    }, 
+    "googlePlus": {
+        "icon": "fa fa-google-plus",
+        "url": "https://google.com/+GOCHOMUGOI"
+    }, 
+    "twitter": {
+        "icon": "fa fa-twitter",
+        "url": "https://twitter.com/MUGO_GOCHO"
+    },
+    "logoUrl": null, 
+    "introHeading": "Don't let yourself forget...", 
+    "introDetails": "A small Command Line Application that lets you retrieve short notes quick"
+}

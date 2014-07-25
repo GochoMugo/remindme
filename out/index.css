@@ -1,0 +1,61 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+
+body {
+  padding:50px;
+  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#777;
+  font-weight:300;
+}
+header {
+    padding-left: 20px;
+}
+header h1 {
+    font-size: 30px;
+}
+#top {
+    background: lightgrey;
+    padding: 40px 0 40px 0;
+    margin-bottom: 20px;
+}
+#logo img {
+    height: 50px;
+}
+#introduction h2 {
+    font-size: 20px;
+}
+#introduction p {
+    font-size: 14px;
+}
+#introduction .btn-group {
+    margin: 4px;
+}
+#navigation ul {
+    list-style: none;
+    font-size: 14px;
+    padding: 0;
+}
+#navigation ul .active {
+    background: red;
+    font-size: 50px;
+}
+#content {
+    margin-bottom: 20px;
+}
+#content h1 {
+    font-size: 28px;
+}
+#content p {
+    font-size: 16px;
+}
+footer {
+    clear: both;
+    text-align: center;
+    padding: 10px;
+}
+footer .credit {
+    font-size: 14px;
+}
+@media print, screen and (max-width: 480px) {
+body {
+    padding:15px;
+}
