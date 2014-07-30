@@ -1,9 +1,14 @@
+Version 0.1.0
+-------------
++   editing new remindmes over several lines with help of `:end`
+    and keyboard interrupt.
+
 Version 0.0.3
 --------------
-=   fixed missing parameter while adding a remindme from commandline
+=   fixed missing parameter while adding a remindme from commandline.
 
 Version 0.0.2
 --------------
 =   -r/--remove failing to remove remindme, fixed.
 =   typo in README, fixed.
-+   keywords and content stored in sqlite3 database
++   keywords and content stored in sqlite3 database.

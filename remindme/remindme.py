@@ -12,7 +12,7 @@ import os
 import sqlite3
 import sys
 
-__version__ = '0.0.3'
+__version__ = '0.1.0'
 home = os.path.expanduser('~')
 db_file = os.path.join(home, '.remindme.db')
 _default = colorama.Fore.WHITE
@@ -98,10 +98,14 @@ def arg_parser():
     parser.add_argument('-a', '--add',
                         metavar='keywords',
                         dest='add', nargs='+',
-                        help='add new RemindMe content')
+                        help='add new RemindMe')
     parser.add_argument('-r', '--remove',
+                        metavar='keywords',
                         dest='remove', nargs='+',
                         help='remove a RemindMe')
+    parser.add_argument('-ra', '--remove-all',
+                        action='store_true',
+                        help='remove all RemindMes')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(__version__))
@@ -131,11 +135,24 @@ def run():
 
     if args['add']:
         keyword = ' '.join(args['add'])
-        prompt = 'Enter what you remember now:\n\n>{0}'.format(_default)
-        if sys.version_info.major < 3:
-            new_content = raw_input(prompt)
-        else:
-            new_content = input(prompt)
+
+        user_input = []
+        def get_input():
+            if sys.version_info.major < 3:
+                return raw_input('> ')
+            else:
+                return input('> ') 
+        print('Enter what you remember now:\n{0}'.format(_default))
+        while 1:
+            try:
+                words = get_input()
+                if words == ':end':
+                    break
+                user_input.append(words)
+            except KeyboardInterrupt:
+                break
+        new_content = '\n'.join(user_input)
+
         if add(content, keyword, new_content):
             print_out(_success, 'RemindMe will remind you next time')
         else:
@@ -149,6 +166,14 @@ Maybe there is already another RemindMe with the same keyword.')
         else:
             print_out(_error, 'RemindMe can NOT remove that. Check if \
 the keywords really exist with me.')
+
+    if args['remove_all']:
+        keywords = [i[0] for i in content]
+        for keyword in keywords:
+            if remove(content, keyword):
+                print_out(_success, 'Remindme removed: {0}'.format(keyword))
+            else:
+                print_out(_error, 'Remindme failed to remove: {0}'.format(keyword))
 
     if args['keywords']:
         keyword = ' '.join(args['keywords'])
