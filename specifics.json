@@ -8,8 +8,8 @@
         "url": "https://gochomugo.github.io"
     },
     "projectName": "remindme", 
-    "version": "0.0.3", 
-    "lastUpdated": "25th July, 2014", 
+    "version": "0.1.0", 
+    "lastUpdated": "30th July, 2014", 
     "tarball": {
         "icon": "fa fa-download",
         "url": "https://github.com/GochoMugo/remindme/tarball/master"
@@ -40,5 +40,5 @@
     },
     "logoUrl": null, 
     "introHeading": "Don't let yourself forget...", 
-    "introDetails": "A small Command Line Application that lets you retrieve short notes quick"
+    "introDetails": "A small Command Line Application that lets you store and retrieve short notes quick"
 }
