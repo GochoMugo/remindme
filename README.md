@@ -45,7 +45,7 @@ It is H20. Right?
 
 `$ pip install --upgrade remindme`
 
-** Documentation **
+**Documentation**:
 
 Usage and Help information may be found [here][gh-pages]
 
