@@ -69,6 +69,7 @@ optional arguments:
                         add new RemindMe content
     -r REMOVE [REMOVE ...], --remove REMOVE [REMOVE ...]
                         remove a RemindMe
+    -Ra, --remove-all   remove all RemindMes
     -v, --version       show program's version number and exit
 
 ```
@@ -87,7 +88,8 @@ If you find a bug, please create an [issue][issues] and I (with you, ofcourse) w
 
 Waiting so much for your Pull Request. :-)
 
-Contributors:
+**Contributors**:
+
 1. [GochoMugo](https://github.com/GochoMugo)
 2. [Low Kian Seong](https://github.com/lowks)
 
