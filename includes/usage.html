@@ -9,13 +9,21 @@ Adding a new remindme is simple.
 <pre><code class='lang-bash'>$ remindme -a keyword you remember
 Enter what you remember now:
 
-> I have just entered some words I wanna remember and get next time fast
+> I must not forget the formula for Water.
+>
+> But if I do, please tell me about it.
+> It is H20. Right?
+> :end
 </code></pre>
+<em>Note:</em> When you are <em>finished</em> editing the remindme, you need to type <code class='lang-bash'>:end</code> in a newline to exit. You might also use <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>C</kbd> (keyboard interrupt) to exit editing.
 </p>
 
 <p>
 Removing a remindme:
 <pre><code class='lang-bash'>$ remindme -r keyword you remember</code></pre>
+
+Removing <b>ALL</b> remindmes: (Please be careful here...)
+<pre><code class='lang-bash'>$ remindme -Ra</code></pre>
 </p>
 
 <p>So I know you might end up forgetting even the keywords:</p>

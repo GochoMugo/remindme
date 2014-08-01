@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>remindme | 0.0.3</title>
+    <title>remindme | 0.1.0</title>
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="out/flat-ui/css/flat-ui.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -19,7 +19,7 @@
         <section id="logo" class="col-md-3 col-md-offset-2"><img></section>
         <section id="introduction" class="col-md-6">
           <h2>Don't let yourself forget...</h2>
-          <p>A small Command Line Application that lets you retrieve short notes quick</p>
+          <p>A small Command Line Application that lets you store and retrieve short notes quick</p>
           <div role="toolbar" class="btn-toolbar">
             <div class="btn-group"><a href="https://github.com/GochoMugo/remindme/tarball/master" class="btn btn-inverse fa fa-download"></a><a href="https://github.com/GochoMugo/remindme/zipball/master" class="btn btn-inverse fa fa-file"></a>
             </div>
@@ -53,6 +53,12 @@ If it fails to install, maybe your require some <em>sudo</em> powers.
 </code></pre>
 </p>
 
+<p>
+Upgrading to the <em>newest</em> version is as simple as:
+<pre><code class='lang-bash'>$ sudo pip install --upgrade remindme
+</code></pre>
+</p>
+
           </section>
           <section id="usage">
             <h1>Usage</h1><pre><code class='lang-bash'>$ remindme -h
@@ -66,13 +72,21 @@ Adding a new remindme is simple.
 <pre><code class='lang-bash'>$ remindme -a keyword you remember
 Enter what you remember now:
 
-> I have just entered some words I wanna remember and get next time fast
+> I must not forget the formula for Water.
+>
+> But if I do, please tell me about it.
+> It is H20. Right?
+> :end
 </code></pre>
+<em>Note:</em> When you are <em>finished</em> editing the remindme, you need to type <code class='lang-bash'>:end</code> in a newline to exit. You might also use <kbd>Cmd</kbd>/<kbd>Ctrl</kbd> + <kbd>C</kbd> (keyboard interrupt) to exit editing.
 </p>
 
 <p>
 Removing a remindme:
 <pre><code class='lang-bash'>$ remindme -r keyword you remember</code></pre>
+
+Removing <b>ALL</b> remindmes: (Please be careful here...)
+<pre><code class='lang-bash'>$ remindme -Ra</code></pre>
 </p>
 
 <p>So I know you might end up forgetting even the keywords:</p>
