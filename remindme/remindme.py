@@ -103,7 +103,7 @@ def arg_parser():
                         metavar='keywords',
                         dest='remove', nargs='+',
                         help='remove a RemindMe')
-    parser.add_argument('-ra', '--remove-all',
+    parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all RemindMes')
     parser.add_argument('-v', '--version',
@@ -116,7 +116,7 @@ def arg_parser():
 
 
 def print_out(_status, content):
-    words = '{0}\n{1}\n{2}'
+    words = '{0}{1}{2}'
     print(words.format(_status, content, _reset))
 
 
@@ -125,23 +125,24 @@ def run():
     content = read()
 
     if args['list']:
-        print_out(_success, 'Found {0} remindme keywords\b'.format(
+        print_out(_success, 'Found {0} remindme keywords:'.format(
             len(content))
         )
         keywords = [item[0] for item in content]
         keywords.sort()
-        print_out(_default, '\n'.join(keywords))
+        print_out(_default, '\n'.join(['- {0}'.format(i) for i in keywords]))
         return
 
     if args['add']:
         keyword = ' '.join(args['add'])
 
         user_input = []
+
         def get_input():
             if sys.version_info.major < 3:
                 return raw_input('> ')
             else:
-                return input('> ') 
+                return input('> ')
         print('Enter what you remember now:\n{0}'.format(_default))
         while 1:
             try:
@@ -171,9 +172,11 @@ the keywords really exist with me.')
         keywords = [i[0] for i in content]
         for keyword in keywords:
             if remove(content, keyword):
-                print_out(_success, 'Remindme removed: {0}'.format(keyword))
+                print_out(_success,
+                          'Remindme removed: {0}'.format(keyword))
             else:
-                print_out(_error, 'Remindme failed to remove: {0}'.format(keyword))
+                print_out(_error,
+                          'Remindme failed to remove: {0}'.format(keyword))
 
     if args['keywords']:
         keyword = ' '.join(args['keywords'])

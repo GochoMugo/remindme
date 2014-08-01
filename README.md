@@ -79,7 +79,7 @@ optional arguments:
 |-------|------:|
 |Version| 0.1.0|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|30th July, 2014|
+|Last Upgrade|2nd August, 2014|
 
 ## Contributtion ##
 
@@ -88,8 +88,8 @@ If you find a bug, please create an [issue][issues] and I (with you, ofcourse) w
 Waiting so much for your Pull Request. :-)
 
 Contributors:
-1. [GochoMugo]:https://github.com/GochoMugo
-2. [Low Kian Seong]:https://github.com/lowks
+1. [GochoMugo](https://github.com/GochoMugo)
+2. [Low Kian Seong](https://github.com/lowks)
 
 ## License ##
 
