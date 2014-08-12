@@ -1,3 +1,7 @@
+Version 0.2.0
+-------------
++ -i/--in to get input when piped
+
 Version 0.1.0
 -------------
 +   editing new remindmes over several lines with help of `:end`

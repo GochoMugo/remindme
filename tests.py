@@ -4,6 +4,8 @@ Unit Testing for RemindMe
 '''
 
 import os
+import subprocess
+import sys
 import unittest
 from remindme import remindme
 
@@ -52,6 +54,30 @@ class RemindMeTests(unittest.TestCase):
         self.assertTrue(removal, 'Removing existing remindmes')
         removal = remindme.remove(self.sample_list, 'ruby')
         self.assertFalse(removal, 'Removing non-existing remindmes')
+
+    def test_piping_in(self):
+        keyword = 'FGRYG'
+        content = 'REMINDME'
+        pipe_in_command = "echo {0}".format(content)
+        base = "python remindme/remindme.py"
+        command = "{0} -i {1}".format(base, keyword)
+        read_command = "{0} {1}".format(base, keyword)
+        clean_up_command = "{0} -r {1}".format(base, keyword)
+        subprocess.check_call(
+            ' | '.join([pipe_in_command, command]),
+            shell=True)
+        with open(keyword, 'w+') as out:
+            result = subprocess.check_call(
+                read_command,
+                shell=True,
+                stdout=out)
+            out.seek(0)
+            readContent = out.read()
+            self.assertTrue(content in readContent, 'Piping in a remindme')
+        # Cleaning up
+        subprocess.check_call(clean_up_command, shell=True)
+        os.remove('./{0}'.format(keyword))
+        sys.stdout.flush()
 
 
 if __name__ == '__main__':

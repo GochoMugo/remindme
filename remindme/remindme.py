@@ -12,7 +12,7 @@ import os
 import sqlite3
 import sys
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 home = os.path.expanduser('~')
 db_file = os.path.join(home, '.remindme.db')
 _default = colorama.Fore.WHITE
@@ -99,6 +99,10 @@ def arg_parser():
                         metavar='keywords',
                         dest='add', nargs='+',
                         help='add new RemindMe')
+    parser.add_argument('-i', '--in',
+                        metavar='keywords',
+                        dest='in', nargs='+',
+                        help='pipe-in input for a new remindme')
     parser.add_argument('-r', '--remove',
                         metavar='keywords',
                         dest='remove', nargs='+',
@@ -160,6 +164,18 @@ def run():
             print_out(_error, 'RemindMe failed to get that in memory.\n\
 Maybe there is already another RemindMe with the same keyword.')
 
+    if args['in']:
+        keyword = ' '.join(args['in'])
+        new_content = sys.stdin.read().strip()
+        if new_content == '':
+            print_out(_error, 'RemindMe got no data')
+        else:
+            if add(content, keyword, new_content):
+                print_out(_success, 'RemindMe will remind you next time')
+            else:
+                print_out(_error, 'RemindMe failed to get that in memory.\n\
+Maybe there is already another RemindMe with the same keyword.')
+
     if args['remove']:
         keyword = ' '.join(args['remove'])
         if remove(content, keyword):
@@ -185,7 +201,8 @@ the keywords really exist with me.')
             print_out(_success, 'RemindMe Reminding you:')
             print_out(_default, results)
         else:
-            print_out(_error, 'RemindMe: I too can\'t rember that')
+            print_out(_error, 'RemindMe: I too can\'t remember that')
+
 
 if __name__ == '__main__':
     run()
