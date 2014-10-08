@@ -33,8 +33,9 @@ class RemindMeTests(unittest.TestCase):
         self.assertEqual(content, [], 'Handling non-existing storage file')
 
     def test_db_writing(self):
-        wrote = db.write(self.sample_list, self.storage_file)
-        self.assertTrue(wrote, 'Writing to file')
+        for item in self.sample_list:
+            wrote = db.write(item[0], item[1], db_file=self.storage_file)
+            self.assertTrue(wrote, 'Writing to file')
 
     def test_db_searching(self):
         result = db.search(self.sample_list, 'python')
@@ -61,7 +62,7 @@ class RemindMeTests(unittest.TestCase):
         keyword = 'FGRYG'
         content = 'REMINDME'
         pipe_in_command = "echo {0}".format(content)
-        base = "python remindme/remindme.py"
+        base = "python -c 'import remindme; remindme.run()' "
         command = "{0} -i {1}".format(base, keyword)
         read_command = "{0} {1}".format(base, keyword)
         clean_up_command = "{0} -r {1}".format(base, keyword)

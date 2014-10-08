@@ -6,6 +6,22 @@ home = os.path.expanduser('~')
 db_file = os.path.join(home, '.remindme.db')
 
 
+def createTable(db, table="remindmes"):
+    try:
+        cursor = db.cursor()
+        sql = 'CREATE TABLE {0}(keyword, content)'
+        sql = sql.format(table)
+        cursor.execute(sql)
+        sql = 'CREATE UNIQUE INDEX indices ON {0}(keyword)'
+        sql = sql.format(table)
+        cursor.execute(sql)
+        db.commit()
+        return True
+    except Exception:
+        db.rollback()
+        return False
+
+
 def read(table='remindmes', db_file=db_file):
     content = []
     with sqlite3.connect(db_file) as db:
@@ -15,16 +31,7 @@ def read(table='remindmes', db_file=db_file):
             for item in cursor.execute(sql).fetchall():
                 content.append(item)
         except sqlite3.OperationalError:
-            try:
-                sql = 'CREATE TABLE {0}(keyword, content)'
-                sql = sql.format(table)
-                cursor.execute(sql)
-                sql = 'CREATE UNIQUE INDEX indices ON {0}(keyword)'
-                sql = sql.format(table)
-                cursor.execute(sql)
-                db.commit()
-            except:
-                db.rollback()
+            createTable(db)
     return content
 
 
@@ -37,8 +44,12 @@ def write(keyword, content, table='remindmes', db_file=db_file):
             db.commit()
             return True
         except sqlite3.OperationalError:
-            db.rollback()
-            return False
+            res = createTable(db)
+            if res:
+                return write(keyword, content, table, db_file)
+            else:
+                db.rollback()
+                return False
     return False
 
 

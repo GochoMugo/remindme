@@ -10,7 +10,7 @@ import argparse
 import colorama
 import getpass
 import sys
-import db
+from . import db
 
 __version__ = '0.2.0'
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
