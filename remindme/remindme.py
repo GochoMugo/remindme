@@ -1,6 +1,6 @@
 '''
 The Core of RemindMe
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 Implemented as pythonic as possible
 
 Copyright (c) 2014 GOCHO MUGO I.
@@ -8,86 +8,25 @@ Copyright (c) 2014 GOCHO MUGO I.
 
 import argparse
 import colorama
-import os
-import sqlite3
+import getpass
 import sys
+import db
 
 __version__ = '0.2.0'
-home = os.path.expanduser('~')
-db_file = os.path.join(home, '.remindme.db')
+LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 _default = colorama.Fore.WHITE
 _error = colorama.Fore.RED
 _priority = colorama.Fore.MAGENTA
 _reset = colorama.Style.RESET_ALL
 _success = colorama.Fore.GREEN
-
-
-def read(db_file=db_file):
-    content = []
-    with sqlite3.connect(db_file) as db:
-        cursor = db.cursor()
-        try:
-            sql = 'SELECT keyword, content FROM remindmes'
-            for item in cursor.execute(sql).fetchall():
-                content.append(item)
-        except sqlite3.OperationalError:
-            try:
-                sql = 'CREATE TABLE remindmes(keyword, content)'
-                cursor.execute(sql)
-                sql = 'CREATE UNIQUE INDEX keys ON remindmes(keyword)'
-                cursor.execute(sql)
-                db.commit()
-            except:
-                db.rollback()
-    return content
-
-
-def write(keyword, content, db_file=db_file):
-    with sqlite3.connect(db_file) as db:
-        try:
-            cursor = db.cursor()
-            sql = 'INSERT INTO remindmes VALUES (?,?)'
-            cursor.execute(sql, (keyword, content,))
-            db.commit()
-            return True
-        except:
-            db.rollback()
-            return True
-    return False
-
-
-def search(content, keyword):
-    for item in content:
-        if item[0] == keyword:
-            return item[1]
-    return False
-
-
-def add(content, keyword, new_content, db_file=db_file):
-    if not search(content, keyword):
-        return write(keyword, new_content, db_file)
-    return False
-
-
-def remove(content, keyword, db_file=db_file):
-    if search(content, keyword):
-        try:
-            with sqlite3.connect(db_file) as db:
-                sql = 'DELETE FROM remindmes WHERE keyword == "{0}"'
-                sql = sql.format(keyword)
-                db.execute(sql)
-                db.commit()
-                return True
-        except:
-            db.rollback()
-            return False
-    else:
-        return False
+PY2 = sys.version_info.major == 2
+PY3 = sys.version_info.major == 3
 
 
 def arg_parser():
     parser = argparse.ArgumentParser(
         description='Reminds you of something you knew before',
+        epilog="See LICENSE at {0}".format(LICENSE)
     )
     parser.add_argument('keywords',
                         metavar='KEYWORDS', nargs='*',
@@ -110,6 +49,9 @@ def arg_parser():
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all RemindMes')
+    parser.add_argument('-k', '--key',
+                        action='store_true',
+                        help='Enable/Disable key')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(__version__))
@@ -119,34 +61,50 @@ def arg_parser():
     return args
 
 
-def print_out(_status, content):
+def print_out(_status, content, newline=True):
     words = '{0}{1}{2}'
-    print(words.format(_status, content, _reset))
+    words += "\n" if newline is True else ""
+    sys.stdout.write(words.format(_status, content, _reset))
+    sys.stdout.flush()
+
+
+def get_input(question=""):
+    if PY2:
+        return raw_input(question + '> ')
+    else:
+        return input(question + '> ')
 
 
 def run():
     args = arg_parser()
-    content = read()
+    content = db.read()
 
     if args['list']:
-        print_out(_success, 'Found {0} remindme keywords:'.format(
-            len(content))
-        )
         keywords = [item[0] for item in content]
+        if args['keywords']:
+            # searching using a phrase
+            phrase = keyword = ' '.join(args['keywords'])
+            keywords = [i for i in keywords if i.startswith(phrase)]
         keywords.sort()
-        print_out(_default, '\n'.join(['- {0}'.format(i) for i in keywords]))
+        num = len(keywords)
+        print_out(_success if num > 0 else _error,
+              'Found {0} remindme keywords:'.format(num)
+        )
+        number = 0
+        remindmes = ""
+        for i in keywords:
+          number += 1
+          remindmes = ''.join([remindmes, '%-2d- %s\n' % (number, i)])
+        print_out(_default, remindmes)
         return
 
     if args['add']:
         keyword = ' '.join(args['add'])
-
+        results = db.search(content, keyword)
+        if results:
+            print_out(_error, "A Remindme already has that name")
+            return
         user_input = []
-
-        def get_input():
-            if sys.version_info.major < 3:
-                return raw_input('> ')
-            else:
-                return input('> ')
         print('Enter what you remember now:\n{0}'.format(_default))
         while 1:
             try:
@@ -158,11 +116,10 @@ def run():
                 break
         new_content = '\n'.join(user_input)
 
-        if add(content, keyword, new_content):
+        if db.add(content, keyword, new_content):
             print_out(_success, 'RemindMe will remind you next time')
         else:
-            print_out(_error, 'RemindMe failed to get that in memory.\n\
-Maybe there is already another RemindMe with the same keyword.')
+            print_out(_error, 'RemindMe failed to get that in memory.')
 
     if args['in']:
         keyword = ' '.join(args['in'])
@@ -170,7 +127,7 @@ Maybe there is already another RemindMe with the same keyword.')
         if new_content == '':
             print_out(_error, 'RemindMe got no data')
         else:
-            if add(content, keyword, new_content):
+            if db.add(content, keyword, new_content):
                 print_out(_success, 'RemindMe will remind you next time')
             else:
                 print_out(_error, 'RemindMe failed to get that in memory.\n\
@@ -178,28 +135,39 @@ Maybe there is already another RemindMe with the same keyword.')
 
     if args['remove']:
         keyword = ' '.join(args['remove'])
-        if remove(content, keyword):
+        if db.remove(content, keyword):
             print_out(_success, 'RemindMe content successfully removed')
         else:
             print_out(_error, 'RemindMe can NOT remove that. Check if \
 the keywords really exist with me.')
 
     if args['remove_all']:
+        confirm = get_input("Remove All Remindmes(yes/NO)")
+        if confirm.strip().lower() != "yes":
+             return print_out(_error, "Removal cancelled")
         keywords = [i[0] for i in content]
         for keyword in keywords:
-            if remove(content, keyword):
+            if db.remove(content, keyword):
                 print_out(_success,
                           'Remindme removed: {0}'.format(keyword))
             else:
                 print_out(_error,
                           'Remindme failed to remove: {0}'.format(keyword))
 
+    if args['key']:
+        print_out(_error, 'Not implemented yet')
+
     if args['keywords']:
         keyword = ' '.join(args['keywords'])
-        results = search(content, keyword)
+        results = db.search(content, keyword)
         if results:
             print_out(_success, 'RemindMe Reminding you:')
-            print_out(_default, results)
+            results = results.split("\n")
+            number = 0
+            for line in results:
+                number += 1
+                print_out(_priority, "%-2d " % (number), newline=False)
+                print_out(_default, line)
         else:
             print_out(_error, 'RemindMe: I too can\'t remember that')
 

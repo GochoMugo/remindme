@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Unit Testing for RemindMe
 ~~~~~~~~~~~~~~~~~~~~
@@ -8,12 +9,13 @@ import subprocess
 import sys
 import unittest
 from remindme import remindme
+from remindme import db
 
 
 class RemindMeTests(unittest.TestCase):
 
     def setUp(self):
-        self.storage_file = os.path.join(os.getcwd(), '.test_remindme.db')
+        self.storage_file = os.path.join(os.getcwd(), '.test_db')
         self.sample_list = [
             ('python', 'so good'),
             ('coffee script', 'that too'),
@@ -24,35 +26,35 @@ class RemindMeTests(unittest.TestCase):
         if os.path.exists(self.storage_file):
             os.remove(self.storage_file)
 
-    def test_reading(self):
+    def test_db_reading(self):
         if os.path.exists(self.storage_file):
             os.remove(self.storage_file)
-        content = remindme.read(self.storage_file)
+        content = db.read(self.storage_file)
         self.assertEqual(content, [], 'Handling non-existing storage file')
 
-    def test_writing(self):
-        wrote = remindme.write(self.sample_list, self.storage_file)
+    def test_db_writing(self):
+        wrote = db.write(self.sample_list, self.storage_file)
         self.assertTrue(wrote, 'Writing to file')
 
-    def test_searching(self):
-        result = remindme.search(self.sample_list, 'python')
+    def test_db_searching(self):
+        result = db.search(self.sample_list, 'python')
         expected = 'so good'
         self.assertEqual(result, expected, 'Searching for an existing keyword')
-        result = remindme.search(self.sample_list, 'ruby')
+        result = db.search(self.sample_list, 'ruby')
         self.assertFalse(result, 'Searching for missing keyword')
 
-    def test_adding(self):
-        result = remindme.add(self.sample_list, 'javascript',
+    def test_db_adding(self):
+        result = db.add(self.sample_list, 'javascript',
                               'powerful and simple', self.storage_file)
         self.assertTrue(result, 'Adding new remindmes')
-        result = remindme.add(self.sample_list, 'python',
+        result = db.add(self.sample_list, 'python',
                               'i love it', self.storage_file)
         self.assertFalse(result, 'Adding existing remindmes')
 
     def test_removing(self):
-        removal = remindme.remove(self.sample_list, 'python')
+        removal = db.remove(self.sample_list, 'python')
         self.assertTrue(removal, 'Removing existing remindmes')
-        removal = remindme.remove(self.sample_list, 'ruby')
+        removal = db.remove(self.sample_list, 'ruby')
         self.assertFalse(removal, 'Removing non-existing remindmes')
 
     def test_piping_in(self):

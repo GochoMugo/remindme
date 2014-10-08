@@ -16,5 +16,5 @@ tests:
 	done
 
 clean:
-	- sudo rm -r remindme/*pyc remindme/__pycache__ .remindme
+	@- sudo rm -rf remindme/*pyc remindme/__pycache__ .remindme
 	@echo 'Cleaned...'

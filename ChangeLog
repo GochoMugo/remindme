@@ -1,13 +1,17 @@
 Version 0.2.0
 -------------
 + -i/--in to get input when piped
++ confirmation before removing all remindmes
++ preview remindmes with keywords starting with some text
++ added line numbers in both listing and reminding view
++ added LICENSE link in epilog
 
 Version 0.1.0
 -------------
 +   editing new remindmes over several lines with help of `:end`
-    and keyboard interrupt.
+and keyboard interrupt.
 +   allow removing all the remindmes at once with new CLI option `-Ra`
-=   too much is no longer used in output.
+=   too much space is no longer used in output.
 
 Version 0.0.3
 --------------
