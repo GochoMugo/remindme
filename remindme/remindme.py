@@ -49,9 +49,6 @@ def arg_parser():
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all RemindMes')
-    parser.add_argument('-k', '--key',
-                        action='store_true',
-                        help='Enable/Disable key')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(__version__))
@@ -153,9 +150,6 @@ the keywords really exist with me.')
             else:
                 print_out(_error,
                           'Remindme failed to remove: {0}'.format(keyword))
-
-    if args['key']:
-        print_out(_error, 'Not implemented yet')
 
     if args['keywords']:
         keyword = ' '.join(args['keywords'])
