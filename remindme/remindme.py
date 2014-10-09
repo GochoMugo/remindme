@@ -19,8 +19,8 @@ _error = colorama.Fore.RED
 _priority = colorama.Fore.MAGENTA
 _reset = colorama.Style.RESET_ALL
 _success = colorama.Fore.GREEN
-PY2 = sys.version_info.major == 2
-PY3 = sys.version_info.major == 3
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
 
 def arg_parser():

@@ -28,10 +28,10 @@ $ remindme Formula For Water
 
 RemindMe reminding you:
 
-I must not forget the formula for Water.
-
-But if I do, please tell me about it.
-It is H20. Right?
+1  I must not forget the formula for Water.
+2
+3  But if I do, please tell me about it.
+4  It is H20. Right?
 
 ```
 
@@ -53,9 +53,10 @@ Usage and Help information may be found [here][gh-pages]
 
 ```bash
 
-usage: remindme [-h] [-l] [-a keywords [keywords ...]] [-r REMOVE [REMOVE ...]]
-                          [-v]
-                          [KEYWORDS [KEYWORDS ...]]
+usage: remindme [-h] [-l] [-a keywords [keywords ...]]
+               [-i keywords [keywords ...]] [-r keywords [keywords ...]] [-Ra]
+               [-v]
+               [KEYWORDS [KEYWORDS ...]]
 
 Reminds you of something you knew before
 
@@ -65,12 +66,16 @@ positional arguments:
 optional arguments:
     -h, --help          show this help message and exit
     -l, --list          list all RemindMe keywords
+    -i keywords [keywords ...], --in keywords [keywords ...]
+                        pipep-in input for a new remindme
     -a keywords [keywords ...], --add keywords [keywords ...]
                         add new RemindMe content
-    -r REMOVE [REMOVE ...], --remove REMOVE [REMOVE ...]
+    -r keywords [keywords ...], --remove keywords [keywords ...]
                         remove a RemindMe
     -Ra, --remove-all   remove all RemindMes
     -v, --version       show program's version number and exit
+
+See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 
 ```
 
@@ -78,9 +83,9 @@ optional arguments:
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.1.0|
+|Version| 0.2.0|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|2nd August, 2014|
+|Last Upgrade|9th October, 2014|
 
 ## Contributtion ##
 
@@ -91,13 +96,13 @@ Waiting so much for your Pull Request. :-)
 **Contributors**:
 
 1. [GochoMugo](https://github.com/GochoMugo)
-2. [Low Kian Seong](https://github.com/lowks)
+*  [Low Kian Seong](https://github.com/lowks)
 
 ## License ##
 
-The Application and its Source Code is issued under the [MIT License].
+Remindme and its Source Code is issued under the [MIT License][MIT].
 
 
 [gh-pages]:https://gochomugo.github.io/remindme "Remindme Home page"
 [issues]:https://github.com/GochoMugo/remindme/issues "Create an Issue"
-[MIT License]:https://github.com/GochoMugo/remindme/blob/master/LICENSE "MIT License"
+[MIT]:https://github.com/GochoMugo/remindme/blob/master/LICENSE "MIT License"
