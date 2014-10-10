@@ -4,4 +4,5 @@ README.txt
 requirements.txt
 setup.py
 remindme/__init__.py
+remindme/db.py
 remindme/remindme.py
