@@ -67,7 +67,7 @@ optional arguments:
     -h, --help          show this help message and exit
     -l, --list          list all RemindMe keywords
     -i keywords [keywords ...], --in keywords [keywords ...]
-                        pipep-in input for a new remindme
+                        pipe-in input for a new remindme
     -a keywords [keywords ...], --add keywords [keywords ...]
                         add new RemindMe content
     -r keywords [keywords ...], --remove keywords [keywords ...]
@@ -83,9 +83,9 @@ See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.2.0|
+|Version| 0.2.1|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|9th October, 2014|
+|Last Upgrade|10th October, 2014|
 
 ## Contributtion ##
 

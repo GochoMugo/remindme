@@ -12,7 +12,7 @@ import getpass
 import sys
 from . import db
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 _default = colorama.Fore.WHITE
 _error = colorama.Fore.RED
@@ -112,6 +112,10 @@ def run():
             except KeyboardInterrupt:
                 break
         new_content = '\n'.join(user_input)
+
+        if new_content is "":
+            print_out(_error, "What are we to save?")
+            return
 
         if db.add(content, keyword, new_content):
             print_out(_success, 'RemindMe will remind you next time')

@@ -67,7 +67,7 @@ def add(content, keyword, new_content, db_file=db_file):
 
 
 def remove(content, keyword, table="remindmes", db_file=db_file):
-    if search(content, keyword):
+    if search(content, keyword) is not False:
         try:
             with sqlite3.connect(db_file) as db:
                 sql = 'DELETE FROM {0} WHERE keyword == "{1}"'
