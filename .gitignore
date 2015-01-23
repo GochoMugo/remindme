@@ -1,4 +1,12 @@
+# python bytecodes
 *.py[doc]
+
+# distribution directory
 dist
+
+# auto-generated manifest file
+MANIFEST
+
+# miscellaneous
 test.py
 TODO.md

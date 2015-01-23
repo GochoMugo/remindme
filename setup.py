@@ -1,30 +1,25 @@
-'''
-RemindMe
-~~~~~~~~
-A Command Line Application that reminds you of somethings you may end
-up forgetting. Just add a `remindme` and in the future you could just
-make RemindMe show you the content.
-
-Licensed under the MIT License. For Open Source Initiative (OSI)
-
-Contribute to the Project at https://github.com/GochoMugo/remindme
-'''
-
 from distutils.core import setup
 import remindme
+
+def get_requirements():
+  '''Returns a list of requirements for installation as listed in the
+  requirements.txt file'''
+  with open("requirements.txt", "r") as reqsFile:
+    reqs = reqsFile.read()
+    return reqs.strip().split("\n")
 
 
 setup(
     name="remindme",
     version=remindme.__version__,
     author="Gocho Mugo I",
-    author_email="gochomugo.developer@gmail.com",
+    author_email="mugo@forfuture.co.ke",
     url="https://github.com/GochoMugo/remindme",
     download_url="https://github.com/GochoMugo/remindme/zipball/master",
     description="Command Line Application for reminding you of something",
     keywords=["remindme", "remind", "remember", "cli"],
     license="MIT",
-    long_description=__doc__,
+    long_description=remindme.__doc__,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -43,10 +38,7 @@ setup(
         "Programming Language :: Python :: 3.4"
     ],
     packages=["remindme"],
-    install_requires=[
-        "argparse",
-        "colorama",
-    ],
+    install_requires=get_requirements(),
     entry_points={
         'console_scripts': [
             'remindme = remindme.remindme:run',

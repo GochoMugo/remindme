@@ -1,9 +1,10 @@
-remindme
-========
+
+# remindme #
 
 [![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=master)](https://travis-ci.org/GochoMugo/remindme)
 
-If only our brains were like computers, we wouldn't have problems remembering even the small things. But sadly we aren't!
+If only our brains were like computers, we wouldn't have problems
+ remembering even the small things. But sadly we aren't!
 
 **Some time ago**: *(adding a short remindme note...)*
 
@@ -19,7 +20,9 @@ Enter what you remember now:
 
 ```
 
-> **Note:** When you are finished editing the remindme, you need to type `:end` in a newline to exit. You might also use `Cmd`/`Ctrl` + `C` (keyboard interrupt) to exit editing.
+> **Note:** When you are finished editing the remindme, you need to
+> type `:end` in a newline to exit. You might also use `Cmd`/`Ctrl` + `C`
+> (keyboard interrupt) to exit editing.
 
 **Some time to come**: *(remembering...)*
 
@@ -35,19 +38,26 @@ RemindMe reminding you:
 
 ```
 
+
 ## Get Started ##
 
-**Installing**:
+### Installing: ###
 
-`$ pip install remindme`
+```bash
+⇒  pip install remindme`
+```
 
-**Upgrading**:
+### Upgrading: ###
 
-`$ pip install --upgrade remindme`
+```bash
+⇒ pip install --upgrade remindme`
+```
 
-**Documentation**:
+
+## Documentation ##
 
 Usage and Help information may be found [here][gh-pages]
+
 
 ## Usage ##
 
@@ -87,9 +97,11 @@ See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
 |Last Upgrade|10th October, 2014|
 
-## Contributtion ##
 
-If you find a bug, please create an [issue][issues] and I (with you, ofcourse) will get it fixed, won't we?
+## Contribution ##
+
+If you find a bug, please create an [issue][issues] and I (with you, ofcourse)
+ will get it fixed, won't we?
 
 Waiting so much for your Pull Request. :-)
 
@@ -97,6 +109,7 @@ Waiting so much for your Pull Request. :-)
 
 1. [GochoMugo](https://github.com/GochoMugo)
 *  [Low Kian Seong](https://github.com/lowks)
+
 
 ## License ##
 
