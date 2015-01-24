@@ -3,7 +3,7 @@ The Core of RemindMe
 ~~~~~~~~~~~~~~~~~~~~
 Implemented as pythonic as possible
 
-Copyright (c) 2014 GOCHO MUGO I.
+Copyright (c) 2014-2015 Gocho Mugo <mugo@forfuture.co.ke>
 '''
 
 import argparse
