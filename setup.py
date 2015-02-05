@@ -1,12 +1,22 @@
-from distutils.core import setup
+'''
+Setup script for RemindMe
+'''
+
+from setuptools import setup
+import migrations
 import remindme
 
+
+# do migrations first
+migrations.start()
+
+
 def get_requirements():
-  '''Returns a list of requirements for installation as listed in the
-  requirements.txt file'''
-  with open("requirements.txt", "r") as reqsFile:
-    reqs = reqsFile.read()
-    return reqs.strip().split("\n")
+    '''Return a list of requirements for installation as listed in the
+    requirements.txt file'''
+    with open("requirements.txt", "r") as reqsFile:
+      reqs = reqsFile.read()
+      return reqs.strip().split("\n")
 
 
 setup(
