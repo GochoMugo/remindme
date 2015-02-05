@@ -72,19 +72,6 @@ class Remindme:
             raise Exception()
 
 
-class RemindmeDatabaseDecorators:
-    '''Decorators for RemindmeDatabase.'''
-
-    @staticmethod
-    def filter_out(db):
-        '''Filters out deleted remindmes.'''
-        def outer(func):
-            db.__remindmes = [r for r in db.__remindmes
-                if r.props()["deleted"] is False]
-            return func()
-        return outer
-
-
 class RemindmeDatabase:
     '''Database of Remindmes.'''
 
@@ -99,9 +86,10 @@ class RemindmeDatabase:
             try:
                 sql = 'CREATE TABLE IF NOT EXISTS remindmes(title, content)'
                 self.__cursor.execute(sql)
-                sql = 'CREATE UNIQUE INDEX indices ON remindmes(title)'
-                self.__cursor.execute(sql)
+                # sql = 'CREATE UNIQUE INDEX indices ON remindmes(title)'
+                # self.__cursor.execute(sql)
                 self.__db.commit()
+                self.load_remindmes()
             except Exception:
                 raise Exception()
 
@@ -118,7 +106,7 @@ class RemindmeDatabase:
     def load_remindmes(self):
         '''Load remindmes from the database.'''
         try:
-            sql = 'SELECT keyword, content FROM remindmes'
+            sql = 'SELECT title, content FROM remindmes'
             for item in self.__cursor.execute(sql).fetchall():
                 remindme = Remindme(item[0], item[1], self.__db)
                 self.__remindmes.append(remindme)
@@ -126,20 +114,25 @@ class RemindmeDatabase:
             pass
         return self
 
-    @RemindmeDatabaseDecorators.filter_out
+    def __filter_out(self):
+        '''Filters out deleted remindmes.'''
+        self.__remindmes = [r for r in self.__remindmes
+            if r.props()["deleted"] is False]
+
     def get_remindmes(self):
         '''Return remindmes from database.'''
+        self.__filter_out()
         return self.__remindmes
 
-    @RemindmeDatabaseDecorators.filter_out
     def save_remindmes(self):
         '''Save all remindmes.'''
+        self.__filter_out()
         for remindme in self.__remindmes:
             remindme.save()
 
-    @RemindmeDatabaseDecorators.filter_out
     def find(self, qualify):
         '''Search through the remindmes.'''
+        self.__filter_out()
         return [x for x in self.__remindmes if qualify(x)]
 
     def find_by_title(self, title):

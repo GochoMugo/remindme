@@ -10,15 +10,15 @@ from . import utils
 
 
 # start-up activities
-#console = utils.Console("runner")
-#database = models.RemindmeDatabase(config.PATHS["db_file"])
+console = utils.Console("runner")
+database = models.RemindmeDatabase(config.PATHS["db_file"])
 
 
 def arg_parser():
     '''Argument Parser.'''
     parser = argparse.ArgumentParser(
         description='Reminds you of something you knew before',
-        epilog="See LICENSE at {0}".format(LICENSE)
+        epilog="See LICENSE at {0}".format(config.LICENSE)
     )
     parser.add_argument('keywords',
                         metavar='TITLE', nargs='*',
@@ -43,7 +43,7 @@ def arg_parser():
                         help='remove all RemindMes')
     parser.add_argument('-v', '--version',
                         action='version',
-                        version='%(prog)s {0}'.format(__version__))
+                        version='%(prog)s {0}'.format(config.__version__))
 
     args = parser.parse_args()
     args = vars(args)
@@ -58,18 +58,21 @@ def run():
         if args['keywords']:
             # searching using a phrase
             phrase = keyword = ' '.join(args['keywords'])
-            keywords = database.find(lambda r: r.title().startswith(phrase))
+            remindmes = database.find(lambda r: r.title().startswith(phrase))
         else:
-            keywords = database.get_remindmes()
-        keywords.sort()
-        num = len(keywords)
-        console.success('Found {0} remindme keywords:'.format(num))
+            remindmes = database.get_remindmes()
+        titles = [r.title() for r in remindmes]
+        titles.sort()
+        num = len(titles)
+        console.success('Found {0} remindmes'.format(num))
+        if num == 0:
+            return
         number = 0
-        remindmes = ""
-        for i in keywords:
+        display_content = ""
+        for title in titles:
           number += 1
-          remindmes = ''.join([remindmes, '%-2d- %s\n' % (number, i)])
-        console.log(remindmes)
+          display_content = ''.join([display_content, '%-2d - %s\n' % (number, title)])
+        console.raw(display_content)
         return
 
     if args['add']:

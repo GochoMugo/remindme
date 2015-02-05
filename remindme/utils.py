@@ -8,12 +8,15 @@ class Console:
     def __init__(self, title):
         self.title = title
 
+    def raw(self, message):
+        sys.stdout.write(message)
+        sys.stdout.flush()
+
     def __write(self, _message, color_code, newline):
         message = Console.template.format(title=self.title,
             color=config.COLORS[color_code], message=_message)
         message += "\n" if newline is True else ""
-        sys.stdout.write(message)
-        sys.stdout.flush()
+        self.raw(message)
 
     def log(self, message, newline=True):
         self.__write(message, "reset", newline)
