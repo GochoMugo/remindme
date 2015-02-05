@@ -1,8 +1,10 @@
 # python bytecodes
 *.py[doc]
 
-# distribution directory
-dist
+# build/distribution directory & output
+build/
+dist/
+remindme.egg-info/
 
 # auto-generated manifest file
 MANIFEST
