@@ -15,14 +15,21 @@ class console:
         sys.stdout.write(message)
         sys.stdout.flush()
 
+    def log(self, message, newline=True):
+        self.__write(message, "", newline)
+        return self
+
     def info(self, message, newline=True):
         self.__write(message, "info", newline)
+        return self
 
     def error(self, message, newline=True):
         self.__write(message, "error", newline)
+        return self
 
     def success(self, message, newline=True):
         self.__write(message, "success", newline)
+        return self
 
     def __input(self):
         if config.PY2:
