@@ -2,21 +2,21 @@ import sys
 from . import config
 
 
-class console:
-    template_log = "[{title}]: {color}{message}" + config.COLORS["reset"]
+class Console:
+    template = "{color}[{title}]: {message}" + config.COLORS["reset"]
 
     def __init__(self, title):
-        self.template = template_log.format(title=title)
+        self.title = title
 
     def __write(self, _message, color_code, newline):
-        message = self.template.format(color=config.COLORS[color_code])
-        message = self.template.format(message=_message)
+        message = Console.template.format(title=self.title,
+            color=config.COLORS[color_code], message=_message)
         message += "\n" if newline is True else ""
         sys.stdout.write(message)
         sys.stdout.flush()
 
     def log(self, message, newline=True):
-        self.__write(message, "", newline)
+        self.__write(message, "reset", newline)
         return self
 
     def info(self, message, newline=True):

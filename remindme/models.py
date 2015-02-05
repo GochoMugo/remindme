@@ -72,6 +72,19 @@ class Remindme:
             raise Exception()
 
 
+class RemindmeDatabaseDecorators:
+    '''Decorators for RemindmeDatabase.'''
+
+    @staticmethod
+    def filter_out(db):
+        '''Filters out deleted remindmes.'''
+        def outer(func):
+            db.__remindmes = [r for r in db.__remindmes
+                if r.props()["deleted"] is False]
+            return func()
+        return outer
+
+
 class RemindmeDatabase:
     '''Database of Remindmes.'''
 
@@ -113,23 +126,18 @@ class RemindmeDatabase:
             pass
         return self
 
-    def __filter_out(self, func):
-        self.__remindmes = [r for r in self.__remindmes
-            if r.props()["deleted"] is False]
-        return func()
-
-    @self.__filter_out
+    @RemindmeDatabaseDecorators.filter_out
     def get_remindmes(self):
         '''Return remindmes from database.'''
         return self.__remindmes
 
-    @self.__filter_out
+    @RemindmeDatabaseDecorators.filter_out
     def save_remindmes(self):
         '''Save all remindmes.'''
         for remindme in self.__remindmes:
             remindme.save()
 
-    @self.__filter_out
+    @RemindmeDatabaseDecorators.filter_out
     def find(self, qualify):
         '''Search through the remindmes.'''
         return [x for x in self.__remindmes if qualify(x)]

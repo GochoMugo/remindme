@@ -1,7 +1,7 @@
 
 # remindme #
 
-[![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=master)](https://travis-ci.org/GochoMugo/remindme)
+[![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=develop)](https://travis-ci.org/GochoMugo/remindme)
 
 If only our brains were like computers, we wouldn't have problems
  remembering even the small things. But sadly we aren't!

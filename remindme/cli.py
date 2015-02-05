@@ -10,8 +10,8 @@ from . import utils
 
 
 # start-up activities
-console = models.Console("runner")
-database = models.RemindmeDatabase(config.PATHS["db_file"])
+#console = utils.Console("runner")
+#database = models.RemindmeDatabase(config.PATHS["db_file"])
 
 
 def arg_parser():
@@ -21,21 +21,21 @@ def arg_parser():
         epilog="See LICENSE at {0}".format(LICENSE)
     )
     parser.add_argument('keywords',
-                        metavar='KEYWORDS', nargs='*',
-                        help='Keyword to remind me something I knew')
+                        metavar='TITLE', nargs='*',
+                        help='Title for RemindMe')
     parser.add_argument('-l', '--list',
                         action='store_true',
-                        help='list all RemindMe keywords')
+                        help='list all RemindMe titles')
     parser.add_argument('-a', '--add',
-                        metavar='keywords',
+                        metavar='title',
                         dest='add', nargs='+',
                         help='add new RemindMe')
     parser.add_argument('-i', '--in',
-                        metavar='keywords',
+                        metavar='title',
                         dest='in', nargs='+',
                         help='pipe-in input for a new remindme')
     parser.add_argument('-r', '--remove',
-                        metavar='keywords',
+                        metavar='title',
                         dest='remove', nargs='+',
                         help='remove a RemindMe')
     parser.add_argument('-Ra', '--remove-all',
@@ -59,7 +59,7 @@ def run():
             # searching using a phrase
             phrase = keyword = ' '.join(args['keywords'])
             keywords = database.find(lambda r: r.title().startswith(phrase))
-        else
+        else:
             keywords = database.get_remindmes()
         keywords.sort()
         num = len(keywords)

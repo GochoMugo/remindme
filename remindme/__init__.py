@@ -11,6 +11,8 @@ Contribute to the Project at https://github.com/GochoMugo/remindme
 '''
 
 
-from .remindme import run, __version__
+from .config import __version__
+from .cli import run
 
-__all__ = ['run', '__version__',]
+
+__all__ = ['__version__', 'run', ]
