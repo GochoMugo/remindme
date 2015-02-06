@@ -1,4 +1,4 @@
-.PHONY: deps, test, shell-tests, clean
+.PHONY: deps test shell-tests clean
 
 # create and upload a distribution (for releases)
 dist: setup.py remindme/
@@ -13,7 +13,7 @@ deps:
 
 # run tests (uses the default python interpreter)
 test:
-	python tests.py
+	python -m test
 
 # run tests against different python versions
 PYTHON_SHELLS = python2.6 python2.7 python3 python3.2
@@ -22,11 +22,11 @@ shell-tests:
 	do \
 		echo ''; \
 		echo '\nRunning Tests in ' $$shell; \
-		$$shell tests.py; \
+		$$shell -m test; \
 	done
 
 # clean directory of unnecessary files
 clean:
 	@- rm -rf remindme/*pyc remindme/__pycache__ .remindme
-	@ rm -rf dist/ MANIFEST
+	@ rm -rf dist/ MANIFEST remindme.egg-info build/
 	@echo 'Cleaned...'
