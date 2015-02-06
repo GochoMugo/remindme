@@ -9,6 +9,9 @@ remindme.egg-info/
 # auto-generated manifest file
 MANIFEST
 
+# test-generated trash
+test/_test*
+
 # miscellaneous
 test.py
 TODO.md

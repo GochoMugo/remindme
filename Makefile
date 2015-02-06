@@ -29,4 +29,5 @@ shell-tests:
 clean:
 	@- rm -rf remindme/*pyc remindme/__pycache__ .remindme
 	@ rm -rf dist/ MANIFEST remindme.egg-info build/
+	@ rm -rf test/_test*
 	@echo 'Cleaned...'
