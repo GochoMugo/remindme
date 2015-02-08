@@ -15,6 +15,7 @@ PATHS["db_file"] = os.path.join(PATHS["home"], ".remindme.db")
 
 
 # colors
+colorama.init()
 COLORS = {}
 COLORS["default"] = colorama.Fore.WHITE
 COLORS["error"] = colorama.Fore.RED
