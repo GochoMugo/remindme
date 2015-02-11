@@ -13,5 +13,4 @@ MANIFEST
 test/_test*
 
 # miscellaneous
-test.py
-TODO.md
+trash.py

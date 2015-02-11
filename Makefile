@@ -27,7 +27,7 @@ shell-tests:
 
 # clean directory of unnecessary files
 clean:
-	@- rm -rf remindme/*pyc remindme/__pycache__ .remindme
+	@- rm -rf remindme/*.pyc remindme/__pycache__ .remindme
 	@ rm -rf dist/ MANIFEST remindme.egg-info build/
-	@ rm -rf test/_test*
+	@ rm -rf test/_test* test/*.pyc
 	@echo 'Cleaned...'
