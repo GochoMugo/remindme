@@ -11,7 +11,7 @@ from . import utils
 
 # start-up activities
 console = utils.Console("runner")
-database = models.RemindmeDatabase(config.PATHS["db_file"])
+repository = models.RemindmeRepository(config.PATHS["db_file"])
 
 
 def arg_parser():
@@ -57,11 +57,11 @@ def run():
     if args['list']:
         if args['keywords']:
             # searching using a phrase
-            phrase = keyword = ' '.join(args['keywords'])
-            remindmes = database.find(lambda r: r.title().startswith(phrase))
+            phrase = ' '.join(args['keywords'])
+            remindmes = repository.find(lambda r: r.get_title().startswith(phrase))
         else:
-            remindmes = database.get_remindmes()
-        titles = [r.title() for r in remindmes]
+            remindmes = repository.get_remindmes()
+        titles = [r.get_title() for r in remindmes]
         titles.sort()
         num = len(titles)
         console.success('Found {0} remindmes'.format(num))
@@ -77,7 +77,7 @@ def run():
 
     if args['add']:
         title = ' '.join(args['add'])
-        results = database.find_by_title(title)
+        results = repository.find_by_title(title)
         if results:
             console.error("A Remindme already has that title")
             return
@@ -99,7 +99,7 @@ def run():
         if content is '':
             console.error('RemindMe got no data!')
         else:
-            if database.new_remindme(title, content):
+            if database.create_remindme(title, content):
                 console.success('RemindMe will remind you next time')
             else:
                 console.error('RemindMe failed to get that in memory.\n\
@@ -107,7 +107,8 @@ Maybe there is already another RemindMe with the same keyword.')
 
     if args['remove']:
         title = ' '.join(args['remove'])
-        if database.remove(lambda r: r.title() == title):
+        remindme = repository.find_by_title(title)
+        if remindme.delete():
             console.success('remindme successfully removed')
         else:
             console.error('can NOT remove that. Check if the remindme \
@@ -117,17 +118,17 @@ really exists with me.')
         confirm = console.get_input("remove All Remindmes(yes/NO)")
         if confirm.strip().lower() != "yes":
              return console.error("removal cancelled")
-        if database.remove_all():
+        if repository.remove_remindmes():
             console.success('removed all of them')
         else:
             console.error('failed to remove all')
 
     if args['keywords']:
         title = ' '.join(args['keywords'])
-        remindme = database.find_by_title(title)
+        remindme = repository.find_by_title(title)
         if remindme:
             console.success('Reminding you:')
-            lines = remindme.content().split("\n")
+            lines = remindme.get_content().split("\n")
             number = 0
             for line in lines:
                 number += 1

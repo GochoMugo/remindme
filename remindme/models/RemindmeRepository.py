@@ -3,6 +3,7 @@ A RemindmeRepository is a Repository for storing and retrieving Remindmes.
 '''
 
 import sqlite3
+from .Remindme import Remindme
 
 
 class RemindmeRepository:
@@ -29,7 +30,7 @@ class RemindmeRepository:
     def __register_remindme(self, remindme):
         self.__remindmes.append(remindme)
 
-    def restore_remindmes(self, title, content):
+    def restore_remindmes(self):
         '''Restores previously stored remindmes from the database.'''
         try:
             sql = 'SELECT title, content FROM remindmes'
@@ -73,10 +74,15 @@ class RemindmeRepository:
             self.__db.rollback()
             return False
 
+    def remove_remindmes(self):
+        '''Removes all remindmes from this repository.'''
+        for remindme in self.__remindmes:
+            remindme.delete()
+
     def __filter_out_deleted(self):
         '''Filters out deleted remindmes.'''
         self.__remindmes = [r for r in self.__remindmes
-            if r.props()["deleted"] is False]
+            if r.get_props()["deleted"] is False]
 
     def get_remindmes(self):
         '''Return remindmes from database.'''
