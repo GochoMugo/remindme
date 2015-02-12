@@ -23,14 +23,14 @@ class RemindmeRepository:
                 # sql = 'CREATE UNIQUE INDEX indices ON remindmes(title)'
                 # self.__cursor.execute(sql)
                 self.__db.commit()
-                self.restore_remindmes()
+                self.__restore_remindmes()
             except Exception:
                 raise Exception()
 
     def __register_remindme(self, remindme):
         self.__remindmes.append(remindme)
 
-    def restore_remindmes(self):
+    def __restore_remindmes(self):
         '''Restores previously stored remindmes from the database.'''
         try:
             sql = 'SELECT title, content FROM remindmes'
@@ -56,11 +56,8 @@ class RemindmeRepository:
     def create_remindme(self, title, content):
         '''Creates a new remindme in this repository.'''
         remindme = Remindme(title, content, self)
-        try:
-            self.insert_remindme(remindme)
-            return remindme
-        except:
-            return None
+        status = self.insert_remindme(remindme)
+        return remindme if status is True else False
 
     def remove_remindme(self, remindme):
         '''Remove remindme from this repository.'''
@@ -69,6 +66,7 @@ class RemindmeRepository:
             sql = sql.format(remindme.get_title())
             self.__cursor.execute(sql)
             self.__db.commit()
+            self.__filter_out_deleted()
             return True
         except:
             self.__db.rollback()
@@ -77,7 +75,10 @@ class RemindmeRepository:
     def remove_remindmes(self):
         '''Removes all remindmes from this repository.'''
         for remindme in self.__remindmes:
-            self.remove_remindme(remindme)
+            status = self.remove_remindme(remindme)
+            if status is False:
+                return False
+        return True
 
     def __filter_out_deleted(self):
         '''Filters out deleted remindmes.'''
@@ -86,20 +87,20 @@ class RemindmeRepository:
 
     def get_remindmes(self):
         '''Return remindmes from database.'''
-        self.__filter_out_deleted()
         return self.__remindmes
 
     def save_remindmes(self):
         '''Save all remindmes.'''
-        self.__filter_out_deleted()
         for remindme in self.__remindmes:
             remindme.save()
 
     def find(self, qualify):
         '''Search through the remindmes.'''
-        self.__filter_out_deleted()
         return [x for x in self.__remindmes if qualify(x)]
 
     def find_by_title(self, title):
         '''Find the remindme by title.'''
         return self.find(lambda remindme: remindme.get_title() == title)[0] or None
+
+    def count(self):
+        return len(self.get_remindmes())
