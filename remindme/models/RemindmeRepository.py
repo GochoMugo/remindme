@@ -77,7 +77,7 @@ class RemindmeRepository:
     def remove_remindmes(self):
         '''Removes all remindmes from this repository.'''
         for remindme in self.__remindmes:
-            remindme.delete()
+            self.remove_remindme(remindme)
 
     def __filter_out_deleted(self):
         '''Filters out deleted remindmes.'''
@@ -102,4 +102,4 @@ class RemindmeRepository:
 
     def find_by_title(self, title):
         '''Find the remindme by title.'''
-        return self.find(lambda remindme: remindme.get_title() == title)
+        return self.find(lambda remindme: remindme.get_title() == title)[0] or None
