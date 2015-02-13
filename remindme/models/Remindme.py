@@ -55,6 +55,9 @@ class Remindme:
                 raise Exception()
         return self
 
+    def set_as_deleted(self):
+        self.__props["deleted"] = True
+
     def delete(self):
         '''Deletes the remindme from repository.'''
         if self.__repository is not None:

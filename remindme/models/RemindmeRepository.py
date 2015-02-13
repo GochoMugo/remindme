@@ -14,14 +14,15 @@ class RemindmeRepository:
         self.__db = None
         self.__cursor = None
         self.__remindmes = []
+        self.__deleted_remindmes = []
         with sqlite3.connect(db_file) as db:
             self.__db = db
             self.__cursor = db.cursor()
             try:
                 sql = 'CREATE TABLE IF NOT EXISTS remindmes(title, content)'
                 self.__cursor.execute(sql)
-                # sql = 'CREATE UNIQUE INDEX indices ON remindmes(title)'
-                # self.__cursor.execute(sql)
+                sql = 'CREATE UNIQUE INDEX IF NOT EXISTS indices ON remindmes(title)'
+                self.__cursor.execute(sql)
                 self.__db.commit()
                 self.__restore_remindmes()
             except Exception:
@@ -44,12 +45,13 @@ class RemindmeRepository:
     def insert_remindme(self, remindme):
         '''Insert remindme into this repository.'''
         try:
+            remindme.set_repository(self)
             sql = 'INSERT INTO remindmes VALUES (?,?)'
             self.__cursor.execute(sql, (remindme.get_title(), remindme.get_content(),))
             self.__db.commit()
             self.__register_remindme(remindme)
             return True
-        except sqlite3.OperationalError:
+        except Exception:
             self.__db.rollback()
             return False
 
@@ -61,11 +63,14 @@ class RemindmeRepository:
 
     def remove_remindme(self, remindme):
         '''Remove remindme from this repository.'''
+        if remindme in self.__deleted_remindmes:
+            return False
         try:
-            sql = 'DELETE FROM remindmes WHERE keyword == "{0}" '
+            sql = 'DELETE FROM remindmes WHERE title == "{0}" '
             sql = sql.format(remindme.get_title())
             self.__cursor.execute(sql)
             self.__db.commit()
+            self.__deleted_remindmes.append(remindme)
             self.__filter_out_deleted()
             return True
         except:
@@ -83,7 +88,7 @@ class RemindmeRepository:
     def __filter_out_deleted(self):
         '''Filters out deleted remindmes.'''
         self.__remindmes = [r for r in self.__remindmes
-            if r.get_props()["deleted"] is False]
+            if r not in self.__deleted_remindmes]
 
     def get_remindmes(self):
         '''Return remindmes from database.'''
