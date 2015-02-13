@@ -65,7 +65,7 @@ class Test_RemindmeRepository_Model(unittest.TestCase):
             return an instance of Remindme''')
 
     def test_create_remindmes_with_same_title(self):
-        title = "some good title, boo"
+        title = "some random content for everyone"
         content = "got some content for you!"
         remindme = self.repository.create_remindme(title, content)
         self.assertTrue(isinstance(remindme, Remindme),
@@ -106,7 +106,7 @@ class Test_RemindmeRepository_Model(unittest.TestCase):
 
     def test_find(self):
         title = "SoME CoMlex! Title tHaT MuST be UniqUE"
-        remindme = Remindme(title, "some damn content")
+        remindme = Remindme(title, "some damn content", self.repository)
         self.repository.insert_remindme(remindme)
         found_remindmes = self.repository.find(lambda r: r.get_title() == title)
         self.assertEqual(1, len(found_remindmes),
