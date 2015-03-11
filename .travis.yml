@@ -1,11 +1,17 @@
 language: python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.2"
-  - "3.3"
-  - "3.4"
-# command to install dependencies
-install: "pip install -r requirements.txt --use-mirrors"
-# command to run tests
-script: "./tests.py" 
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+install: make deps
+script: make test
+deploy:
+  provider: pypi
+  user: GochoMugoI
+  password:
+    secure: KHRK2zmyjkc16CSbgxs5o2d9jZdB7Mmi6TX9BQHzLBm2ov4Jn4j/3DPlrY2brNbZEScE5y3eXkSFUw2I6WYLQ/LYiMBJRE+XsSgDFae+BMYSwdhuXld0ScG/2ZklamU5rizrree/qN1UylvjxHNC0cHIZ7ybg8Ycm9kcJC/olZY=
+  on:
+    tags: true
+    branch: master
+    repo: GochoMugo/remindme

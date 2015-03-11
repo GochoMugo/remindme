@@ -1,4 +1,16 @@
+# python bytecodes
 *.py[doc]
-dist
-test.py
-TODO.md
+
+# build/distribution directory & output
+build/
+dist/
+remindme.egg-info/
+
+# auto-generated manifest file
+MANIFEST
+
+# test-generated trash
+test/_test*
+
+# miscellaneous
+trash.py
