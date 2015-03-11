@@ -76,7 +76,7 @@ def migrate_1():
         db.commit()
         console.success("success migrating from 0.2.1 to 0.3.0")
         return "0.3.0"
-    except Exception, err:
+    except Exception as err:
         db.rollback()
         console.error("error migrating")
         console.error(err)
