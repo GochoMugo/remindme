@@ -10,7 +10,7 @@ deploy:
   provider: pypi
   user: GochoMugoI
   password:
-    secure: N32Gv45FeX9qpoqj5Ui/bnNhas407j/PVYv/r6drCsGz1TpTDEZHVldbzeNye9YNHqnD7XJ0MOn+4EL75JDK7OhUG5rV4f/HE5g9wcAORF9llCBb1WH7hG12fSgRKDaLoH/cJIPNwo+XAMInaw7Ll/axK+U7mIS6tNoqWi/iAE4=
+    secure: VqAPAqM4cpblt60p4nEDKylz8JBPYS9OqJCiP8+OWR80ETbz4i34ttaJHPTIq6qwiIQl9M0Gp6qC/VYrOBOGilWtXMMW4vhukwadMfCTEOmwdqFpyUtT7I+i1Fcjsyzo7vM9TRsN+ZB27IQQw+wlHceXcjo6AIrQqhDiUgaC35w=
   on:
     tags: true
     repo: GochoMugo/remindme
