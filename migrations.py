@@ -19,19 +19,19 @@ def detect_versions():
     '''Detects the current version installed.'''
     global CURRENT_VERSION
     global NEW_VERSION
+    cwd = os.getcwd()
+    sys.path.remove(cwd)
+    old_mod = sys.modules["remindme"]
+    del sys.modules["remindme"]
     try:
-        cwd = os.getcwd()
-        sys.path.remove(cwd)
-        old_mod = sys.modules["remindme"]
-        del sys.modules["remindme"]
         import remindme
         CURRENT_VERSION = remindme.__version__
-        sys.path.append(cwd)
-        sys.modules["remindme"] = old_mod
         console.info("currently installed version: {0}".format(CURRENT_VERSION))
     except:
         console.error("failed to detect currently installed version")
         pass
+    sys.path.append(cwd)
+    sys.modules["remindme"] = old_mod
     import remindme # we have to re-import here!!!
     NEW_VERSION = remindme.__version__
     console.info("new version to install: {0}".format(NEW_VERSION))
@@ -62,7 +62,7 @@ def migrate_1():
     sql_rename_orig_tbl = "ALTER TABLE remindmes RENAME TO tmp_remindmes;"
     sql_create_tbl = "CREATE TABLE remindmes(title, content);"
     sql_copy_old_tbl = '''
-        INSERT INTO remindmes(title, content) SELECT keyword, content
+        INSERT INTO remindmes(title, content) SELECT *
         FROM tmp_remindmes;
     '''
     sql_drop_orig_tbl = "DROP TABLE tmp_remindmes;"
@@ -76,7 +76,8 @@ def migrate_1():
         db.commit()
         console.success("success migrating from 0.2.1 to 0.3.0")
         return "0.3.0"
-    except Exception, err:
+    except Exception as err:
+        db.rollback()
         console.error("error migrating")
         console.error(err)
         return None
