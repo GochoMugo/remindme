@@ -1,3 +1,4 @@
 include ChangeLog
 include requirements.txt
 include migrations.py
+include README.md
