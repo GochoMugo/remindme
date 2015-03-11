@@ -1,7 +1,7 @@
 
 # remindme #
 
-[![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=develop)](https://travis-ci.org/GochoMugo/remindme)
+[![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=master)](https://travis-ci.org/GochoMugo/remindme)
 
 If only our brains were like computers, we wouldn't have problems
  remembering even the small things. But sadly we aren't!
@@ -9,9 +9,8 @@ If only our brains were like computers, we wouldn't have problems
 **Some time ago**: *(adding a short remindme note...)*
 
 ```bash
-$ remindme -a Formula For Water
-Enter what you remember now:
-
+⇒ remindme -a Formula For Water
+[runner]: Enter what you remember now?
 > I must not forget the formula for Water.
 >
 > But if I do, please tell me about it.
@@ -20,17 +19,16 @@ Enter what you remember now:
 
 ```
 
-> **Note:** When you are finished editing the remindme, you need to
-> type `:end` in a newline to exit. You might also use `Cmd`/`Ctrl` + `C`
-> (keyboard interrupt) to exit editing.
+> **Note:** When you are finished editing the remindme, you need
+> to type `:end` in a newline to exit. You might also
+> use `Cmd`/`Ctrl` + `C` (keyboard interrupt) to exit editing.
+
 
 **Some time to come**: *(remembering...)*
 
 ```bash
-$ remindme Formula For Water
-
-RemindMe reminding you:
-
+⇒ remindme Formula For Water
+[runner]: Reminding you:
 1  I must not forget the formula for Water.
 2
 3  But if I do, please tell me about it.
@@ -44,13 +42,13 @@ RemindMe reminding you:
 ### Installing: ###
 
 ```bash
-⇒  pip install remindme`
+⇒  pip install remindme
 ```
 
 ### Upgrading: ###
 
 ```bash
-⇒ pip install --upgrade remindme`
+⇒ pip install --upgrade remindme
 ```
 
 
@@ -63,27 +61,26 @@ Usage and Help information may be found [here][gh-pages]
 
 ```bash
 
-usage: remindme [-h] [-l] [-a keywords [keywords ...]]
-               [-i keywords [keywords ...]] [-r keywords [keywords ...]] [-Ra]
-               [-v]
-               [KEYWORDS [KEYWORDS ...]]
+usage: remindme [-h] [-l] [-a title [title ...]] [-i title [title ...]]
+              [-r title [title ...]] [-Ra] [-v]
+              [TITLE [TITLE ...]]
 
 Reminds you of something you knew before
 
 positional arguments:
-  KEYWORDS              Keyword to remind me something I knew
+  TITLE                 Title for RemindMe
 
 optional arguments:
-    -h, --help          show this help message and exit
-    -l, --list          list all RemindMe keywords
-    -i keywords [keywords ...], --in keywords [keywords ...]
+  -h, --help            show this help message and exit
+  -l, --list            list all RemindMe titles
+  -a title [title ...], --add title [title ...]
+                        add new RemindMe
+  -i title [title ...], --in title [title ...]
                         pipe-in input for a new remindme
-    -a keywords [keywords ...], --add keywords [keywords ...]
-                        add new RemindMe content
-    -r keywords [keywords ...], --remove keywords [keywords ...]
+  -r title [title ...], --remove title [title ...]
                         remove a RemindMe
-    -Ra, --remove-all   remove all RemindMes
-    -v, --version       show program's version number and exit
+  -Ra, --remove-all     remove all RemindMes
+  -v, --version         show program's version number and exit
 
 See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 
@@ -93,15 +90,16 @@ See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.2.1|
+|Version| 0.3.0|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|10th October, 2014|
+|Last Upgrade|11th March, 2015|
+
+> I have __not__ yet tested it on __Python 2.6__ but it should work, I hope
 
 
 ## Contribution ##
 
-If you find a bug, please create an [issue][issues] and I (with you, ofcourse)
- will get it fixed, won't we?
+If you find a bug, please create an [issue][issues].
 
 Waiting so much for your Pull Request. :-)
 
