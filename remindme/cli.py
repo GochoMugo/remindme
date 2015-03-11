@@ -84,11 +84,11 @@ def run():
         message = "Enter what you remember now"
         content = console.get_long_input(message)
 
-        if user_input is "":
+        if content is "":
             console.error("We have nothing to save!")
             return
 
-        if database.new_remindme(title, content):
+        if repository.create_remindme(title, content):
             console.success('RemindMe will remind you next time.')
         else:
             console.error('RemindMe failed to get that in memory.')
@@ -99,7 +99,7 @@ def run():
         if content is '':
             console.error('RemindMe got no data!')
         else:
-            if database.create_remindme(title, content):
+            if repository.create_remindme(title, content):
                 console.success('RemindMe will remind you next time')
             else:
                 console.error('RemindMe failed to get that in memory.\n\
@@ -108,7 +108,7 @@ Maybe there is already another RemindMe with the same keyword.')
     if args['remove']:
         title = ' '.join(args['remove'])
         remindme = repository.find_by_title(title)
-        if remindme.delete():
+        if remindme and remindme.delete():
             console.success('remindme successfully removed')
         else:
             console.error('can NOT remove that. Check if the remindme \
@@ -132,8 +132,7 @@ really exists with me.')
             number = 0
             for line in lines:
                 number += 1
-                console.info("%-2d " % (number), newline=False)
-                console.log(line)
+                console.raw("%-2d %s\n" % (number, line))
         else:
             console.error('I too can\'t remember that')
 

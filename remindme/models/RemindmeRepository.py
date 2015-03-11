@@ -105,7 +105,8 @@ class RemindmeRepository:
 
     def find_by_title(self, title):
         '''Find the remindme by title.'''
-        return self.find(lambda remindme: remindme.get_title() == title)[0] or None
+        found = self.find(lambda remindme: remindme.get_title() == title)
+        return found[0] if found else None
 
     def count(self):
         return len(self.get_remindmes())

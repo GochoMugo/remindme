@@ -12,7 +12,7 @@ deps:
 	pip install -r requirements.txt
 
 # run tests (uses the default python interpreter)
-test:
+test: clean
 	python -m test
 
 # run tests against different python versions
