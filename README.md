@@ -90,9 +90,9 @@ See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
 
 |Aspect|Detail|
 |-------|------:|
-|Version| 0.3.0|
+|Version| 0.3.1|
 |Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|11th March, 2015|
+|Last Upgrade|22nd April, 2015|
 
 > I have __not__ yet tested it on __Python 2.6__ but it should work, I hope
 
