@@ -5,6 +5,7 @@
 build/
 dist/
 remindme.egg-info/
+README.txt
 
 # auto-generated manifest file
 MANIFEST

@@ -3,12 +3,7 @@ Setup script for RemindMe
 '''
 
 from setuptools import setup
-import migrations
 import remindme
-
-
-# do migrations first
-migrations.start()
 
 
 def get_requirements():
