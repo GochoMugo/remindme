@@ -6,7 +6,8 @@ Objectives:
 '''
 
 import unittest
-from remindme.models import Remindme, RemindmeRepository
+from remindme.Remindme import Remindme
+from remindme.RemindmeRepository import RemindmeRepository
 
 
 class Test_Remindme_Model(unittest.TestCase):

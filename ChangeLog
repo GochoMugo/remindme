@@ -1,3 +1,11 @@
+Version 0.3.2
+---------------
+= Fix error when installing
+
+Version 0.3.1
+---------------
+- Remove automatic data migration during installation
+
 Version 0.3.0
 ---------------
 + Use of OOP Design

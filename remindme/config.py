@@ -4,7 +4,7 @@ import colorama
 
 
 # project metadata
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 
 

@@ -5,13 +5,13 @@ Command-line runner for Application
 import argparse
 import sys
 from . import config
-from . import models
 from . import utils
+from .RemindmeRepository import RemindmeRepository
 
 
 # start-up activities
 console = utils.Console("runner")
-repository = models.RemindmeRepository(config.PATHS["db_file"])
+repository = RemindmeRepository(config.PATHS["db_file"])
 
 
 def arg_parser():

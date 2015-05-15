@@ -10,7 +10,6 @@ Licensed under the MIT License. For Open Source Initiative (OSI)
 Contribute to the Project at https://github.com/GochoMugo/remindme
 '''
 
-
 from .config import __version__
 from .cli import run
 
