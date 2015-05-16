@@ -1,3 +1,5 @@
-# remindme #
 
-You can view this site at https://gochomugo.github.io/remindme
+# remindme
+
+See documentation site at https://gochomugo.github.io/remindme/
+

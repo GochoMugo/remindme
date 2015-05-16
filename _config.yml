@@ -1,0 +1,14 @@
+title: remindme
+project_name: remindme
+description: >
+  A small command line application that lets you store and retrieve short notes quick
+repository_url: https://github.com/GochoMugo/remindme
+repository_shorthand: GochoMugo/remindme
+
+baseurl: "/remindme"
+
+author_name: GochoMugo
+author_url: https://github.com/GochoMugo
+
+markdown: kramdown
+highlighter: pygments

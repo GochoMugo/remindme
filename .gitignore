@@ -1,4 +1,5 @@
-*.py[doc]
-dist
-test.py
-TODO
+# jekyll's output
+_site/
+
+# cache for sass compiler
+.sass-cache/
