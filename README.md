@@ -3,38 +3,11 @@
 
 [![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=master)](https://travis-ci.org/GochoMugo/remindme)
 
-If only our brains were like computers, we wouldn't have problems
- remembering even the small things. But sadly we aren't!
+> A small command line application that lets you store and retrieve short notes quick
 
-**Some time ago**: *(adding a short remindme note...)*
+If only our brains were like computers, we wouldn't have problems remembering even the small things. But sadly we aren't!
 
-```bash
-⇒ remindme -a Formula For Water
-[runner]: Enter what you remember now?
-> I must not forget the formula for Water.
->
-> But if I do, please tell me about it.
-> It is H20. Right?
-> :end
-
-```
-
-> **Note:** When you are finished editing the remindme, you need
-> to type `:end` in a newline to exit. You might also
-> use `Cmd`/`Ctrl` + `C` (keyboard interrupt) to exit editing.
-
-
-**Some time to come**: *(remembering...)*
-
-```bash
-⇒ remindme Formula For Water
-[runner]: Reminding you:
-1  I must not forget the formula for Water.
-2
-3  But if I do, please tell me about it.
-4  It is H20. Right?
-
-```
+![See it Work](res/intro.gif)
 
 
 ## Get Started
@@ -56,35 +29,6 @@ If only our brains were like computers, we wouldn't have problems
 
 Usage and Help information may be found [here][gh-pages]
 
-
-## Usage
-
-```bash
-
-usage: remindme [-h] [-l] [-a title [title ...]] [-i title [title ...]]
-              [-r title [title ...]] [-Ra] [-v]
-              [TITLE [TITLE ...]]
-
-Reminds you of something you knew before
-
-positional arguments:
-  TITLE                 Title for RemindMe
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -l, --list            list all RemindMe titles
-  -a title [title ...], --add title [title ...]
-                        add new RemindMe
-  -i title [title ...], --in title [title ...]
-                        pipe-in input for a new remindme
-  -r title [title ...], --remove title [title ...]
-                        remove a RemindMe
-  -Ra, --remove-all     remove all RemindMes
-  -v, --version         show program's version number and exit
-
-See LICENSE at https://github.com/GochoMugo/remindme/blob/master/LICENSE
-
-```
 
 ## Version Information
 
