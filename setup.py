@@ -19,6 +19,7 @@ setup(
     version=remindme.__version__,
     author="Gocho Mugo I",
     author_email="mugo@forfuture.co.ke",
+    author_url="https://gochomugo.github.io/",
     url="https://github.com/GochoMugo/remindme",
     download_url="https://github.com/GochoMugo/remindme/zipball/master",
     description="Command Line Application for reminding you of something",
@@ -26,7 +27,7 @@ setup(
     license="MIT",
     long_description=remindme.__doc__,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved",

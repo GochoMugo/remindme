@@ -1,9 +1,10 @@
 
 # remindme
 
-[![Build Status](https://travis-ci.org/GochoMugo/remindme.svg?branch=master)](https://travis-ci.org/GochoMugo/remindme)
-
 > A small command line application that lets you store and retrieve short notes quick
+
+[![Travis](https://img.shields.io/travis/GochoMugo/remindme.svg?style=flat-square)](https://travis-ci.org/GochoMugo/remindme) [![pypi version](https://img.shields.io/pypi/v/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![python versions](ttps://img.shields.io/pypi/pyversions/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![pypi downloads](https://img.shields.io/pypi/dm/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme)
+
 
 If only our brains were like computers, we wouldn't have problems remembering even the small things. But sadly we aren't!
 
@@ -25,40 +26,13 @@ If only our brains were like computers, we wouldn't have problems remembering ev
 ```
 
 
-## Documentation
+## Documentation:
 
-Usage and Help information may be found [here][gh-pages]
-
-
-## Version Information
-
-|Aspect|Detail|
-|-------|------:|
-|Version| 0.3.2|
-|Python|2.6, 2.7, 3.2, 3.3, 3.4|
-|Last Upgrade|15th May, 2015|
-
-> I have __not__ yet tested it on __Python 2.6__ but it should work, I hope
+Usage and Help information may be found [here](https://gochomugo.github.io/remindme)
 
 
-## Contribution
+## License:
 
-If you find a bug, please create an [issue][issues].
+__The MIT License (MIT)__
 
-Waiting so much for your Pull Request. :smile:
-
-**Contributors**:
-
-1. [GochoMugo](https://github.com/GochoMugo)
-1. [Low Kian Seong](https://github.com/lowks)
-
-
-## License
-
-Remindme and its Source Code is issued under the [MIT License][MIT].
-
-
-[gh-pages]:https://gochomugo.github.io/remindme "Remindme Home page"
-[issues]:https://github.com/GochoMugo/remindme/issues "Create an Issue"
-[MIT]:https://github.com/GochoMugo/remindme/blob/master/LICENSE "MIT License"
-
+Copyright (c) 2014-2015 Gocho Mugo <mugo@forfuture.co.ke>
