@@ -79,7 +79,7 @@ Reading a note is even simpler:
 
 ### editing an existing note:
 
-Editing an existing note is simple too. Although [we need an external editor](/configuration/#editor) for this.
+Editing an existing note is simple too. Although [we need an external editor]({{ site.baseurl }}/configuration/#editor) for this.
 
 {% highlight bash %}
 ⇒ remindme --edit Title of The Note
