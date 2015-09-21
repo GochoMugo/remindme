@@ -11,6 +11,7 @@ from .RemindmeRepository import RemindmeRepository
 
 # start-up activities
 console = utils.Console("runner")
+gui = utils.GUI()
 repository = RemindmeRepository(config.PATHS["db_file"])
 
 
@@ -22,14 +23,18 @@ def arg_parser():
     )
     parser.add_argument('keywords',
                         metavar='TITLE', nargs='*',
-                        help='Title for RemindMe')
+                        help='title for remindme')
     parser.add_argument('-l', '--list',
                         action='store_true',
-                        help='list all RemindMe titles')
+                        help='list all remindme titles')
     parser.add_argument('-a', '--add',
                         metavar='title',
                         dest='add', nargs='+',
-                        help='add new RemindMe')
+                        help='add new remindme')
+    parser.add_argument('-e', '--edit',
+                        metavar='title',
+                        dest='edit', nargs='+',
+                        help='edit old remindme')
     parser.add_argument('-i', '--in',
                         metavar='title',
                         dest='in', nargs='+',
@@ -37,10 +42,10 @@ def arg_parser():
     parser.add_argument('-r', '--remove',
                         metavar='title',
                         dest='remove', nargs='+',
-                        help='remove a RemindMe')
+                        help='remove a remindme')
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
-                        help='remove all RemindMes')
+                        help='remove all remindmes')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(config.__version__))
@@ -53,6 +58,7 @@ def arg_parser():
 def run():
     '''Run the command-line runner.'''
     args = arg_parser()
+    settings = utils.Settings.read()
 
     if args['list']:
         if args['keywords']:
@@ -79,31 +85,59 @@ def run():
         title = ' '.join(args['add'])
         results = repository.find_by_title(title)
         if results:
-            console.error("A Remindme already has that title")
+            console.error("A remindme already has that title")
             return
-        message = "Enter what you remember now"
-        content = console.get_long_input(message)
+        # use editor if available, otherwise use console
+        if settings.get("editor", None):
+            try:
+                content = gui.editor(settings["editor"])
+            except Exception as err:
+                console.error("External editor (%s) exited with a non-zero status code" % (settings["editor"]))
+                console.error(str(err))
+                return
+        else:
+            message = "Enter what you remember now"
+            content = console.get_long_input(message)
 
         if content is "":
             console.error("We have nothing to save!")
             return
 
         if repository.create_remindme(title, content):
-            console.success('RemindMe will remind you next time.')
+            console.success('Remindme will remind you next time.')
         else:
-            console.error('RemindMe failed to get that in memory.')
+            console.error('Remindme failed to get that in memory.')
+        return
+
+    if args['edit']:
+        title = ' '.join(args['edit'])
+        remindme = repository.find_by_title(title)
+        if not remindme:
+            console.error("no such remindme exists")
+            return
+        # we require an external editor for this
+        if not settings.get("editor", None):
+            console.error("you need to set an external editor")
+            return
+        content = gui.editor(settings["editor"], remindme.get_content())
+        remindme.set_content(content)
+        if repository.update_remindme(remindme):
+            console.success('The remindme has been updated.')
+        else:
+            console.error('Remindme failed to save the remindme.')
+        return
 
     if args['in']:
         title = ' '.join(args['in'])
         content = sys.stdin.read().strip()
         if content is '':
-            console.error('RemindMe got no data!')
+            console.error('Remindme got no data!')
         else:
             if repository.create_remindme(title, content):
-                console.success('RemindMe will remind you next time')
+                console.success('Remindme will remind you next time')
             else:
-                console.error('RemindMe failed to get that in memory.\n\
-Maybe there is already another RemindMe with the same keyword.')
+                console.error('Remindme failed to get that in memory.\n\
+Maybe there is already another remindme with the same title.')
 
     if args['remove']:
         title = ' '.join(args['remove'])
@@ -111,7 +145,7 @@ Maybe there is already another RemindMe with the same keyword.')
         if remindme and remindme.delete():
             console.success('remindme successfully removed')
         else:
-            console.error('can NOT remove that. Check if the remindme \
+            console.error('Remindme can not remove that. Check if the remindme \
 really exists with me.')
 
     if args['remove_all']:

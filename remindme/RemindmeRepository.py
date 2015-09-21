@@ -36,7 +36,7 @@ class RemindmeRepository:
         try:
             sql = 'SELECT title, content FROM remindmes'
             for item in self.__cursor.execute(sql).fetchall():
-                remindme = Remindme(item[0], item[1], self)
+                remindme = Remindme(item[0], item[1], repository=self)
                 self.__register_remindme(remindme)
         except sqlite3.OperationalError:
             pass
@@ -60,6 +60,17 @@ class RemindmeRepository:
         remindme = Remindme(title, content, self)
         status = self.insert_remindme(remindme)
         return remindme if status is True else False
+
+    def update_remindme(self, remindme):
+        '''Updates a remindme in this repository.'''
+        try:
+            sql = "UPDATE remindmes SET content='%s' WHERE title='%s' " % (remindme.get_content(), remindme.get_title(),)
+            self.__cursor.execute(sql)
+            self.__db.commit()
+            return True
+        except Exception as err:
+            self.__db.rollback()
+            return False
 
     def remove_remindme(self, remindme):
         '''Remove remindme from this repository.'''

@@ -51,9 +51,8 @@ class Remindme:
         if self.__repository is not None:
             status = self.__repository.insert_remindme(self)
             self.__props["saved"] = status
-            if status is False:
-                raise Exception()
-        return self
+            return status
+        return False
 
     def set_as_deleted(self):
         self.__props["deleted"] = True
@@ -63,6 +62,5 @@ class Remindme:
         if self.__repository is not None:
             status = self.__repository.remove_remindme(self)
             self.__props["deleted"] = status
-            if status is False:
-                raise Exception()
-        return self
+            return status
+        return False
