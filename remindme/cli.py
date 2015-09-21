@@ -117,7 +117,7 @@ def run():
             return
         # we require an external editor for this
         if not settings.get("editor", None):
-            console.error("you need to set an external editor")
+            console.error("you need to set an external editor for editing existing remindmes")
             return
         content = gui.editor(settings["editor"], remindme.get_content())
         remindme.set_content(content)
