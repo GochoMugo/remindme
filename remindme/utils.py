@@ -1,4 +1,9 @@
+import json
+import os
+import subprocess
 import sys
+import tempfile
+import uuid
 from . import config
 
 
@@ -56,3 +61,43 @@ class Console:
             except KeyboardInterrupt:
                 break
         return '\n'.join(user_input)
+
+
+class GUI:
+    def editor(self, editor, content=None):
+        '''Opens an external editor for editing. Returns entered
+        contents once editor is closed.
+
+        Throws subprocess.CalledProcessError when executing the editor
+        executable.'''
+        filename = ".remindme-" + str(uuid.uuid4())
+        filepath = os.path.join(tempfile.gettempdir(), filename)
+        # if editing old content, add it to the file before opening an
+        # editor to edit the file
+        if content:
+            with open(filepath, "w") as f:
+                f.write(content)
+        subprocess.check_call([editor, filepath])
+        with open(filepath) as f:
+            content = f.read()
+        os.unlink(filepath)
+        return content
+
+
+class Settings:
+    config = {}
+
+    @staticmethod
+    def read():
+        if os.path.isfile(config.PATHS["config_file"]):
+            with open(config.PATHS["config_file"]) as config_file:
+                content = config_file.read()
+                content = json.loads(content)
+                Settings.config = content
+        return Settings.config
+
+    @staticmethod
+    def write():
+        content = json.dumps(Settings.config, sort_keys=True, indent=4)
+        with open(config.PATHS["config_file"], "w") as config_file:
+            config_file.write(content)

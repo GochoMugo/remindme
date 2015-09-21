@@ -12,6 +12,7 @@ LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 PATHS = {}
 PATHS["home"] = os.path.expanduser("~")
 PATHS["db_file"] = os.path.join(PATHS["home"], ".remindme.db")
+PATHS["config_file"] = os.path.join(PATHS["home"], ".remindme")
 
 
 # colors
