@@ -8,6 +8,7 @@ permalink: /usage/
 * [adding a note](#add)
 * [listing notes](#list)
 * [reading a note](#read)
+* [editing an existing note](#edit)
 * [removing a note](#remove)
 * [removing all remindmes](#remove-all)
 * [help information](#help)
@@ -73,6 +74,18 @@ Reading a note is even simpler:
 4 several lines
 {% endhighlight %}
 
+
+<a name="edit"></a>
+
+### editing an existing note:
+
+Editing an existing note is simple too. Although [we need an external editor](/configuration/#editor) for this.
+
+{% highlight bash %}
+⇒ remindme --edit Title of The Note
+{% endhighlight %}
+
+
 <a name="remove"></a>
 
 ### removing a note:
@@ -113,4 +126,3 @@ Version information can be seen with:
 {% highlight bash %}
 ⇒ remindme --version
 {% endhighlight %}
-

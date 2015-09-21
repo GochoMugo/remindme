@@ -7,9 +7,9 @@ permalink: /
 
 {{ site.description }}
 
-|version|0.3.2|
-|python|2.6, 2.7, 3.2, 3.3, 3.4|
-|last upgrade|15th May, 2015|
+|version|0.4.0|
+|python|2.7, 3.2, 3.3, 3.4|
+|last upgrade|21st September, 2015|
 
 * [why use remindme](#why)
 * [see it work](#work)
@@ -50,4 +50,3 @@ You can also upgrade remindme anytime:
 {% highlight bash %}
 ⇒ pip install --upgrade remindme
 {% endhighlight %}
-
