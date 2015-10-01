@@ -4,6 +4,7 @@ A Remindme is an Entity representing a single user-defined remindme.
 
 import base64
 import os
+import cryptography
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -14,7 +15,7 @@ from . import config
 class Remindme:
     '''A user's single remindme.'''
 
-    def __init__(self, title, content, salt=None, repository=None):
+    def __init__(self, title, content, password=None, salt=None, repository=None):
         '''Creates new remindme.'''
         self.__title = title
         self.__content = content
@@ -23,6 +24,8 @@ class Remindme:
         self.__props = {}
         self.__props["saved"] = False
         self.__props["deleted"] = False
+        if password is not None:
+            self.set_content(content, password=password)
 
     def set_title(self, title):
         '''Set title of this remindme.'''
@@ -38,7 +41,7 @@ class Remindme:
         return self.__salt
 
     def set_content(self, content, password=None):
-         '''Set content of this remindme.'''
+        '''Set content of this remindme.'''
         # when we do not require encryption
         if password is None:
             self.__content = content
@@ -47,9 +50,9 @@ class Remindme:
             self.__salt = os.urandom(16)
             kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), backend=default_backend(), salt=self.__salt,
                              length=config.CRYPTO["kdf_length"], iterations=config.CRYPTO["kdf_iterations"])
-            key = base64.urlsafe_b64encode(kdf.derive(password))
+            key = base64.urlsafe_b64encode(kdf.derive(bytes(password)))
             fernet = Fernet(key)
-            self.__content = f.encrypt(content)
+            self.__content = fernet.encrypt(bytes(content))
         return self
 
     def get_content(self, password=None):
@@ -59,9 +62,12 @@ class Remindme:
         # we need to decrypt, using the password
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256, backend=default_backend(), salt=self.__salt,
                          length=config.CRYPTO["kdf_length"], iterations=config.CRYPTO["kdf_iterations"])
-        key = base64.urlsafe_b64encode(kdf.derive(password))
+        key = base64.urlsafe_b64encode(kdf.derive(bytes(password)))
         fernet = Fernet(key)
-        return fernet.decrypt(self.__content)
+        try:
+            return str(fernet.decrypt(self.__content))
+        except cryptography.fernet.InvalidToken:
+            return None
 
     def set_repository(self, repository):
         '''Set repository reference for this remindme.'''

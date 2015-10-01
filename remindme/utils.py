@@ -1,3 +1,4 @@
+import getpass
 import json
 import os
 import subprocess
@@ -61,6 +62,10 @@ class Console:
             except KeyboardInterrupt:
                 break
         return '\n'.join(user_input)
+
+    def get_password(self, prompt="password: "):
+        self.info(prompt, newline=False)
+        return getpass.getpass(prompt="")
 
 
 class GUI:

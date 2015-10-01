@@ -4,7 +4,7 @@ import colorama
 
 
 # project metadata
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 
 
@@ -33,4 +33,4 @@ PY3 = sys.version_info[0] == 3
 # cryptography settings
 CRYPTO = {}
 CRYPTO["kdf_iterations"] = 100000
-CRYPTO["Kdf_length"] = 32
+CRYPTO["kdf_length"] = 32

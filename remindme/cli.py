@@ -46,6 +46,9 @@ def arg_parser():
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all remindmes')
+    parser.add_argument('-p', '--plain',
+                        action='store_true',
+                        help='store as plain text')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(config.__version__))
@@ -103,7 +106,8 @@ def run():
             console.error("We have nothing to save!")
             return
 
-        if repository.create_remindme(title, content):
+        password = console.get_password() if not args['plain'] else None
+        if repository.create_remindme(title, content, password=password):
             console.success('Remindme will remind you next time.')
         else:
             console.error('Remindme failed to get that in memory.')
@@ -119,8 +123,14 @@ def run():
         if not settings.get("editor", None):
             console.error("you need to set an external editor for editing existing remindmes")
             return
-        content = gui.editor(settings["editor"], remindme.get_content())
-        remindme.set_content(content)
+        # editing encrypted content
+        password = console.get_password() if not args['plain'] else None
+        content = remindme.get_content(password=password)
+        if content is None:
+            console.error("could not decrypt text")
+            return
+        content = gui.editor(settings["editor"])
+        remindme.set_content(content, password=password)
         if repository.update_remindme(remindme):
             console.success('The remindme has been updated.')
         else:
@@ -133,7 +143,8 @@ def run():
         if content is '':
             console.error('Remindme got no data!')
         else:
-            if repository.create_remindme(title, content):
+            password = console.get_password() if not args['plain'] else None
+            if repository.create_remindme(title, content, password=password):
                 console.success('Remindme will remind you next time')
             else:
                 console.error('Remindme failed to get that in memory.\n\
@@ -162,7 +173,12 @@ really exists with me.')
         remindme = repository.find_by_title(title)
         if remindme:
             console.success('Reminding you:')
-            lines = remindme.get_content().split("\n")
+            password = console.get_password() if not args['plain'] else None
+            content = remindme.get_content(password=password)
+            if content is None:
+                console.error("could not decrypt text")
+                return
+            lines = content.split("\n")
             number = 0
             for line in lines:
                 number += 1

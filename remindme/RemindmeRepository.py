@@ -36,7 +36,7 @@ class RemindmeRepository:
         try:
             sql = 'SELECT title, content, salt FROM remindmes'
             for item in self.__cursor.execute(sql).fetchall():
-                remindme = Remindme(item[0], item[1], salt=item[2], repository=self)
+                remindme = Remindme(item[0], bytes(item[1]), salt=bytes(item[2]), repository=self)
                 self.__register_remindme(remindme)
         except sqlite3.OperationalError:
             pass
@@ -47,28 +47,30 @@ class RemindmeRepository:
         try:
             remindme.set_repository(self)
             sql = 'INSERT INTO remindmes VALUES (?,?,?)'
-            self.__cursor.execute(sql, (remindme.get_title(), remindme.get_content(), remindme.get_salt()))
+            self.__cursor.execute(sql, (remindme.get_title(), sqlite3.Binary(remindme.get_content()), sqlite3.Binary(remindme.get_salt())))
             self.__db.commit()
             self.__register_remindme(remindme)
             return True
-        except Exception:
+        except Exception as err:
+            print err
             self.__db.rollback()
             return False
 
-    def create_remindme(self, title, content, salt=None):
+    def create_remindme(self, title, content, password=None):
         '''Creates a new remindme in this repository.'''
-        remindme = Remindme(title, content, salt=salt, repository=self)
+        remindme = Remindme(title, content, password=password, repository=self)
         status = self.insert_remindme(remindme)
         return remindme if status is True else False
 
     def update_remindme(self, remindme):
         '''Updates a remindme in this repository.'''
         try:
-            sql = "UPDATE remindmes SET content='%s' WHERE title='%s' " % (remindme.get_content(), remindme.get_title(),)
-            self.__cursor.execute(sql)
+            sql = "UPDATE remindmes SET content=?, salt=? WHERE title=?;"
+            self.__cursor.execute(sql, (sqlite3.Binary(remindme.get_content()), sqlite3.Binary(remindme.get_salt()), remindme.get_title(),))
             self.__db.commit()
             return True
         except Exception as err:
+            print err
             self.__db.rollback()
             return False
 
