@@ -124,7 +124,7 @@ def run():
             console.error("you need to set an external editor for editing existing remindmes")
             return
         # editing encrypted content
-        password = console.get_password() if not args['plain'] else None
+        password = console.get_password() if remindme.is_encrypted() else None
         content = remindme.get_content(password=password)
         if content is None:
             console.error("could not decrypt text")
@@ -173,7 +173,7 @@ really exists with me.')
         remindme = repository.find_by_title(title)
         if remindme:
             console.success('Reminding you:')
-            password = console.get_password() if not args['plain'] else None
+            password = console.get_password() if remindme.is_encrypted() else None
             content = remindme.get_content(password=password)
             if content is None:
                 console.error("could not decrypt text")
