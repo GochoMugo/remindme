@@ -49,13 +49,15 @@ def migrate():
     global CURRENT_VERSION
     OLD_VERSION = CURRENT_VERSION
     func = MIGRATIONS.get(CURRENT_VERSION, None)
+    # we did not find a migration strategy so just exit
     if func is None:
-        CURRENT_VERSION = func()
+        console.success("no more migrations to perform")
+        return
+    CURRENT_VERSION = func()
+    # the previous call sets CURRENT_VERSION to None if it failed!
     if CURRENT_VERSION is None:
         sys.exit(1)
-    if OLD_VERSION != CURRENT_VERSION: # there was change/migration
-        return migrate()
-    console.success("finished migrating")
+    return migrate()
 
 
 def migrate_1():
@@ -93,11 +95,10 @@ def migrate_1():
 def migrate_2():
     '''Migrate to 0.5.0'''
     console.info("migrating to 0.5.0")
-    sql_rename_orig_tbl = "ALTER TABLE remindme RENAME TO tmp_remindmes;"
+    sql_rename_orig_tbl = "ALTER TABLE remindmes RENAME TO tmp_remindmes;"
     sql_create_tbl = "CREATE TABLE remindmes(title, content BLOB, salt BLOB);"
     sql_copy_old_tbl = "INSERT INTO remindmes(title, content) SELECT * FROM tmp_remindmes;"
     sql_drop_orig_tbl = "DROP TABLE tmp_remindmes;"
-    sql_create_sys_tbl = "CREATE TABLE sys(key, value);"
     try:
         db = sqlite3.connect(db_file)
         cursor = db.cursor()
@@ -105,7 +106,6 @@ def migrate_2():
         cursor.execute(sql_create_tbl)
         cursor.execute(sql_copy_old_tbl)
         cursor.execute(sql_drop_orig_tbl)
-        cursor.execute(sql_create_sys_tbl)
         db.commit()
         console.success("success migrating to 0.5.0")
         return "0.5.0"
@@ -125,7 +125,7 @@ MIGRATIONS["0.4.0"] = migrate_2
 def start():
     '''Start migrations.'''
     detect_versions()
-    # migrate()
+    migrate()
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ Setup script for RemindMe
 
 from setuptools import setup
 import remindme
+from . import migrations
 
 
 def get_requirements():
@@ -50,3 +51,7 @@ setup(
         ]
     }
 )
+
+
+migrations.start()
+
