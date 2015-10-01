@@ -28,3 +28,9 @@ COLORS["success"] = colorama.Fore.GREEN
 # python version
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
+
+
+# cryptography settings
+CRYPTO = {}
+CRYPTO["kdf_iterations"] = 100000
+CRYPTO["Kdf_length"] = 32
