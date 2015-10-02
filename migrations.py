@@ -2,8 +2,8 @@
 Handles migrations from one version to another version.
 '''
 
-import os
 import sqlite3
+import subprocess
 import sys
 import remindme
 
@@ -16,38 +16,25 @@ console = remindme.utils.Console("migration")
 db_file = remindme.config.PATHS["db_file"]
 
 
-def detect_versions():
+def detect_version():
     '''Detects the current version installed.'''
     global CURRENT_VERSION
-    cwd = os.getcwd()
-    sys.path.remove(cwd)
     try:
         # user may not have installed remindme EVER
-        unload_remindme()
-        import remindme as r
-        CURRENT_VERSION = r.__version__ or "unversioned"
-    except:
-        console.error("failed to detect currently installed version")
+        version = subprocess.check_output(["remindme", "--version"], stderr=subprocess.STDOUT)
+        version = version.strip().strip("remindme ")
+        CURRENT_VERSION = version or "unversioned"
+        console.info("currently installed version: {0}".format(CURRENT_VERSION))
+    except subprocess.CalledProcessError as err:
+        console.error("could not detect currently-installed version: %s" % err)
         pass
-    # clean-up
-    sys.path.append(cwd)
-    unload_remindme()
-    import remindme
-    console.info("currently installed version: {0}".format(CURRENT_VERSION))
     console.info("new version to install: {0}".format(NEW_VERSION))
-
-
-def unload_remindme():
-    targets = [x for x in sys.modules if x.startswith("remindme")]
-    for mod in targets:
-        del sys.modules[mod]
 
 
 def migrate():
     '''Handles invoking migrations.'''
     console.info("process migrations")
     global CURRENT_VERSION
-    OLD_VERSION = CURRENT_VERSION
     func = MIGRATIONS.get(CURRENT_VERSION, None)
     # we did not find a migration strategy so just exit
     if func is None:
@@ -124,7 +111,7 @@ MIGRATIONS["0.4.0"] = migrate_2
 
 def start():
     '''Start migrations.'''
-    detect_versions()
+    detect_version()
     migrate()
 
 
