@@ -36,7 +36,10 @@ class RemindmeRepository:
         try:
             sql = 'SELECT title, content, salt FROM remindmes'
             for item in self.__cursor.execute(sql).fetchall():
-                remindme = Remindme(item[0], bytes(item[1]), salt=bytes(item[2]), repository=self)
+                title = item[0]
+                content = bytes(item[1])
+                salt = bytes(item[2]) if item[2] else None
+                remindme = Remindme(title, content, salt=salt, repository=self)
                 self.__register_remindme(remindme)
         except sqlite3.OperationalError:
             pass

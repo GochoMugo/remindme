@@ -15,7 +15,7 @@ from . import config
 class Remindme:
     '''A user's single remindme.'''
 
-    def __init__(self, title, content, password=None, salt='', repository=None):
+    def __init__(self, title, content, password=None, salt=None, repository=None):
         '''Creates new remindme.'''
         self.__title = title
         self.__content = content
@@ -42,7 +42,7 @@ class Remindme:
 
     def is_encrypted(self):
         '''Return true if remindme content needs to be decrypted'''
-        return True if isinstance(self.__salt, bytes) and self.__salt != 'None' else False
+        return True if self.__salt is not None else False
 
     def set_content(self, content, password=None):
         '''Set content of this remindme.'''
