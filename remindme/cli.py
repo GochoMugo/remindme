@@ -102,7 +102,7 @@ def run():
             message = "Enter what you remember now"
             content = console.get_long_input(message)
 
-        if content is "":
+        if not content:
             console.error("We have nothing to save!")
             return
 
@@ -129,8 +129,10 @@ def run():
         if content is None:
             console.error("could not decrypt text")
             return
-        content = gui.editor(settings["editor"])
-        remindme.set_content(content, password=password)
+        content = gui.editor(settings["editor"], content=content)
+        # update content, only if we got some content
+        if content:
+            remindme.set_content(content, password=password)
         if repository.update_remindme(remindme):
             console.success('The remindme has been updated.')
         else:
