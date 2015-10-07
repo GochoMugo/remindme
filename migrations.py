@@ -25,7 +25,7 @@ def detect_version():
         version = version.strip().strip("remindme ")
         CURRENT_VERSION = version or "unversioned"
         console.info("currently installed version: {0}".format(CURRENT_VERSION))
-    except subprocess.CalledProcessError as err:
+    except Exception as err:
         console.error("could not detect currently-installed version: %s" % err)
         pass
     console.info("new version to install: {0}".format(NEW_VERSION))
