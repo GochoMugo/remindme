@@ -85,6 +85,11 @@ def run():
         # if encryption is by default and plaintext has not been requested
         elif encrypt_by_default and not plaintext_requested:
             password = console.get_password()
+
+        # warn the user that no password was captured, if the case is so
+        if password is None:
+            console.info("NO password was captured. Storing as plain text.")
+
         return password
 
     if args['list']:
