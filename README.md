@@ -3,7 +3,7 @@
 
 > A small command line application that lets you store and retrieve short notes quick
 
-[![Travis](https://img.shields.io/travis/GochoMugo/remindme.svg?style=flat-square)](https://travis-ci.org/GochoMugo/remindme) [![pypi version](https://img.shields.io/pypi/v/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![python versions](ttps://img.shields.io/pypi/pyversions/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![pypi downloads](https://img.shields.io/pypi/dm/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme)
+[![Travis](https://img.shields.io/travis/GochoMugo/remindme.svg?style=flat-square)](https://travis-ci.org/GochoMugo/remindme) [![pypi version](https://img.shields.io/pypi/v/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![python versions](https://img.shields.io/pypi/pyversions/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme) [![pypi downloads](https://img.shields.io/pypi/dm/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme)
 
 
 If only our brains were like computers, we wouldn't have problems remembering even the small things. But sadly we aren't!
