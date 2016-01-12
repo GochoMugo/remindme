@@ -1,3 +1,9 @@
+Version 0.5.0
+---------------
++ Add encryption
+- Drop official support for python 3.2, as the cryptography library
+used does not support it
+
 Version 0.4.0
 ---------------
 + Allow using an external editor e.g. vim
@@ -32,17 +38,17 @@ Version 0.2.0
 
 Version 0.1.0
 -------------
-+   editing new remindmes over several lines with help of `:end`
++ editing new remindmes over several lines with help of `:end`
 and keyboard interrupt.
-+   allow removing all the remindmes at once with new CLI option `-Ra`
-=   too much space is no longer used in output.
++ allow removing all the remindmes at once with new CLI option `-Ra`
+= too much space is no longer used in output.
 
 Version 0.0.3
 --------------
-=   fixed missing parameter while adding a remindme from commandline.
+= fixed missing parameter while adding a remindme from commandline.
 
 Version 0.0.2
 --------------
-=   -r/--remove failing to remove remindme, fixed.
-=   typo in README, fixed.
-+   keywords and content stored in sqlite3 database.
+= -r/--remove failing to remove remindme, fixed.
+= typo in README, fixed.
++ keywords and content stored in sqlite3 database.
