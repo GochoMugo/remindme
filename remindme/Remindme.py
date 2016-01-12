@@ -19,7 +19,7 @@ class Remindme:
         '''Creates new remindme.'''
         self.__title = title
         self.__content = content
-        self.__salt = salt
+        self.__salt = salt or None
         self.__repository = repository
         self.__props = {}
         self.__props["saved"] = False

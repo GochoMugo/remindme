@@ -71,13 +71,13 @@ class Console:
                 break
         return '\n'.strip().join(user_input) or None
 
-    def get_password(self, prompt="password: "):
+    def get_password(self, prompt="password (leave blank for NO password): "):
         '''Prompt for password, using prompt as question.
 
         Input is hidden from view.
         Returns a string.'''
         self.info(prompt, newline=False)
-        return getpass.getpass(prompt="")
+        return getpass.getpass(prompt="") or None
 
 
 class GUI:

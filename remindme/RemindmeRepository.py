@@ -50,7 +50,7 @@ class RemindmeRepository:
         try:
             remindme.set_repository(self)
             sql = 'INSERT INTO remindmes VALUES (?,?,?)'
-            self.__cursor.execute(sql, (remindme.get_title(), sqlite3.Binary(remindme.get_content()), sqlite3.Binary(remindme.get_salt())))
+            self.__cursor.execute(sql, (remindme.get_title(), sqlite3.Binary(remindme.get_content() or ''), sqlite3.Binary(remindme.get_salt() or '')))
             self.__db.commit()
             self.__register_remindme(remindme)
             return True
