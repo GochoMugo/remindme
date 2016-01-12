@@ -34,3 +34,8 @@ PY3 = sys.version_info[0] == 3
 CRYPTO = {}
 CRYPTO["kdf_iterations"] = 100000
 CRYPTO["kdf_length"] = 32
+
+# default user settings
+USER_SETTINGS = {}
+USER_SETTINGS["disable_encryption"] = False
+USER_SETTINGS["encrypt_by_default"] = True

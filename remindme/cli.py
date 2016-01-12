@@ -46,6 +46,9 @@ def arg_parser():
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all remindmes')
+    parser.add_argument('-x', '--encrypt',
+                        action='store_true',
+                        help='encrypt before storing')
     parser.add_argument('-p', '--plain',
                         action='store_true',
                         help='store as plain text')
@@ -62,6 +65,27 @@ def run():
     '''Run the command-line runner.'''
     args = arg_parser()
     settings = utils.Settings.read()
+
+    def get_password():
+        # determining whether to ask for a password based on need to encrypt
+        encryption_disabled = settings.get("disable_encryption", config.USER_SETTINGS["disable_encryption"])
+        encrypt_by_default = settings.get("encrypt_by_default", config.USER_SETTINGS["encrypt_by_default"])
+        encryption_requested = args["encrypt"] or False
+        plaintext_requested = args["plain"] or False
+        password = None
+
+        # ensure encryption is not disabled
+        if encryption_disabled:
+            console.info("encryption is disabled")
+            return password
+
+        # if encryption has been requested
+        if encryption_requested:
+            password = console.get_password()
+        # if encryption is by default and plaintext has not been requested
+        elif encrypt_by_default and not plaintext_requested:
+            password = console.get_password()
+        return password
 
     if args['list']:
         if args['keywords']:
@@ -106,7 +130,7 @@ def run():
             console.error("We have nothing to save!")
             return
 
-        password = console.get_password() if not args['plain'] else None
+        password = get_password()
         if repository.create_remindme(title, content, password=password):
             console.success('Remindme will remind you next time.')
         else:
@@ -145,7 +169,7 @@ def run():
         if content is '':
             console.error('Remindme got no data!')
         else:
-            password = console.get_password() if not args['plain'] else None
+            password = get_password()
             if repository.create_remindme(title, content, password=password):
                 console.success('Remindme will remind you next time')
             else:
