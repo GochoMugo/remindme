@@ -7,9 +7,9 @@ permalink: /
 
 {{ site.description }}
 
-|version|0.4.0|
-|python|2.7, 3.2, 3.3, 3.4|
-|last upgrade|21st September, 2015|
+|version|0.5.0|
+|python|2.7, 3.3, 3.4|
+|last upgrade|13th January, 2016|
 
 * [why use remindme](#why)
 * [see it work](#work)
@@ -20,9 +20,29 @@ permalink: /
 
 ## why use remindme
 
-Since we can not always remember everything, we sometimes need to write some notes. Writing notes on paper is tiring, messy and not so portable. Keeping a file(s) with several such notes may get messy real fast.
+Since we can not always remember everything, we sometimes need to write
+some notes. Writing notes on paper is tiring, messy and not so
+portable. Keeping a file(s) with several such notes may get messy real
+fast.
 
-*remindme* makes keeping such notes easy and fast.
+Features:
+
+* simple interface
+
+    Using remindme is quite simple. Its interface is focused on being simple
+    with sane default options, which are easily configured.
+
+* multi-platform
+
+    Remindme can run in any system with Python support. Yes, it can run on
+    Windows.
+
+* encryption support
+
+    Uses AES cipher, in CBC mode, with 128-bit key size. See the
+    [official docs](https://cryptography.io/en/latest/fernet/#using-passwords-with-fernet)
+    on the encryption techniques used and detailed documentation.
+
 
 <a name="work"></a>
 
