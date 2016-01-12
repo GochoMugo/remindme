@@ -46,6 +46,12 @@ def arg_parser():
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
                         help='remove all remindmes')
+    parser.add_argument('-x', '--encrypt',
+                        action='store_true',
+                        help='encrypt before storing')
+    parser.add_argument('-p', '--plain',
+                        action='store_true',
+                        help='store as plain text')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(config.__version__))
@@ -59,6 +65,32 @@ def run():
     '''Run the command-line runner.'''
     args = arg_parser()
     settings = utils.Settings.read()
+
+    def get_password():
+        # determining whether to ask for a password based on need to encrypt
+        encryption_disabled = settings.get("disable_encryption", config.USER_SETTINGS["disable_encryption"])
+        encrypt_by_default = settings.get("encrypt_by_default", config.USER_SETTINGS["encrypt_by_default"])
+        encryption_requested = args["encrypt"] or False
+        plaintext_requested = args["plain"] or False
+        password = None
+
+        # ensure encryption is not disabled
+        if encryption_disabled:
+            console.info("encryption is disabled")
+            return password
+
+        # if encryption has been requested
+        if encryption_requested:
+            password = console.get_password()
+        # if encryption is by default and plaintext has not been requested
+        elif encrypt_by_default and not plaintext_requested:
+            password = console.get_password()
+
+        # warn the user that no password was captured, if the case is so
+        if password is None:
+            console.info("NO password was captured. Storing as plain text.")
+
+        return password
 
     if args['list']:
         if args['keywords']:
@@ -99,11 +131,12 @@ def run():
             message = "Enter what you remember now"
             content = console.get_long_input(message)
 
-        if content is "":
+        if not content:
             console.error("We have nothing to save!")
             return
 
-        if repository.create_remindme(title, content):
+        password = get_password()
+        if repository.create_remindme(title, content, password=password):
             console.success('Remindme will remind you next time.')
         else:
             console.error('Remindme failed to get that in memory.')
@@ -119,8 +152,16 @@ def run():
         if not settings.get("editor", None):
             console.error("you need to set an external editor for editing existing remindmes")
             return
-        content = gui.editor(settings["editor"], remindme.get_content())
-        remindme.set_content(content)
+        # editing encrypted content
+        password = console.get_password() if remindme.is_encrypted() else None
+        content = remindme.get_content(password=password)
+        if content is None:
+            console.error("could not decrypt text")
+            return
+        content = gui.editor(settings["editor"], content=content)
+        # update content, only if we got some content
+        if content:
+            remindme.set_content(content, password=password)
         if repository.update_remindme(remindme):
             console.success('The remindme has been updated.')
         else:
@@ -133,7 +174,8 @@ def run():
         if content is '':
             console.error('Remindme got no data!')
         else:
-            if repository.create_remindme(title, content):
+            password = get_password()
+            if repository.create_remindme(title, content, password=password):
                 console.success('Remindme will remind you next time')
             else:
                 console.error('Remindme failed to get that in memory.\n\
@@ -162,7 +204,12 @@ really exists with me.')
         remindme = repository.find_by_title(title)
         if remindme:
             console.success('Reminding you:')
-            lines = remindme.get_content().split("\n")
+            password = console.get_password() if remindme.is_encrypted() else None
+            content = remindme.get_content(password=password)
+            if content is None:
+                console.error("could not decrypt text")
+                return
+            lines = content.split("\n")
             number = 0
             for line in lines:
                 number += 1

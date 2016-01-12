@@ -35,4 +35,4 @@ Usage and Help information may be found [here](https://gochomugo.github.io/remin
 
 __The MIT License (MIT)__
 
-Copyright (c) 2014-2015 Gocho Mugo <mugo@forfuture.co.ke>
+Copyright (c) 2014-2016 Gocho Mugo <mugo@forfuture.co.ke>

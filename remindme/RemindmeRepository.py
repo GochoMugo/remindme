@@ -9,7 +9,7 @@ from .Remindme import Remindme
 class RemindmeRepository:
     '''Repository of Remindmes.'''
 
-    def __init__(self, db_file):
+    def __init__(self, db_file, key=None):
         '''Create a sqlite3 database for remindmes.'''
         self.__db = None
         self.__cursor = None
@@ -19,7 +19,7 @@ class RemindmeRepository:
             self.__db = db
             self.__cursor = db.cursor()
             try:
-                sql = 'CREATE TABLE IF NOT EXISTS remindmes(title, content)'
+                sql = 'CREATE TABLE IF NOT EXISTS remindmes(title, content BLOB, salt BLOB)'
                 self.__cursor.execute(sql)
                 sql = 'CREATE UNIQUE INDEX IF NOT EXISTS indices ON remindmes(title)'
                 self.__cursor.execute(sql)
@@ -34,9 +34,12 @@ class RemindmeRepository:
     def __restore_remindmes(self):
         '''Restores previously stored remindmes from the database.'''
         try:
-            sql = 'SELECT title, content FROM remindmes'
+            sql = 'SELECT title, content, salt FROM remindmes'
             for item in self.__cursor.execute(sql).fetchall():
-                remindme = Remindme(item[0], item[1], repository=self)
+                title = item[0]
+                content = bytes(item[1])
+                salt = bytes(item[2]) if item[2] else None
+                remindme = Remindme(title, content, salt=salt, repository=self)
                 self.__register_remindme(remindme)
         except sqlite3.OperationalError:
             pass
@@ -46,29 +49,31 @@ class RemindmeRepository:
         '''Insert remindme into this repository.'''
         try:
             remindme.set_repository(self)
-            sql = 'INSERT INTO remindmes VALUES (?,?)'
-            self.__cursor.execute(sql, (remindme.get_title(), remindme.get_content(),))
+            sql = 'INSERT INTO remindmes VALUES (?,?,?)'
+            self.__cursor.execute(sql, (remindme.get_title(), sqlite3.Binary(remindme.get_content() or ''), sqlite3.Binary(remindme.get_salt() or '')))
             self.__db.commit()
             self.__register_remindme(remindme)
             return True
-        except Exception:
+        except Exception as err:
+            print err
             self.__db.rollback()
             return False
 
-    def create_remindme(self, title, content):
+    def create_remindme(self, title, content, password=None):
         '''Creates a new remindme in this repository.'''
-        remindme = Remindme(title, content, self)
+        remindme = Remindme(title, content, password=password, repository=self)
         status = self.insert_remindme(remindme)
         return remindme if status is True else False
 
     def update_remindme(self, remindme):
         '''Updates a remindme in this repository.'''
         try:
-            sql = "UPDATE remindmes SET content='%s' WHERE title='%s' " % (remindme.get_content(), remindme.get_title(),)
-            self.__cursor.execute(sql)
+            sql = "UPDATE remindmes SET content=?, salt=? WHERE title=?;"
+            self.__cursor.execute(sql, (sqlite3.Binary(remindme.get_content()), sqlite3.Binary(remindme.get_salt()), remindme.get_title(),))
             self.__db.commit()
             return True
         except Exception as err:
+            print err
             self.__db.rollback()
             return False
 

@@ -4,7 +4,7 @@ import colorama
 
 
 # project metadata
-__version__ = "0.4.0"
+__version__ = "0.5.0"
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
 
 
@@ -28,3 +28,14 @@ COLORS["success"] = colorama.Fore.GREEN
 # python version
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
+
+
+# cryptography settings
+CRYPTO = {}
+CRYPTO["kdf_iterations"] = 100000
+CRYPTO["kdf_length"] = 32
+
+# default user settings
+USER_SETTINGS = {}
+USER_SETTINGS["disable_encryption"] = False
+USER_SETTINGS["encrypt_by_default"] = True

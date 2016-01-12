@@ -4,6 +4,18 @@ Setup script for RemindMe
 
 from setuptools import setup
 import remindme
+import subprocess
+
+
+console = remindme.utils.Console("setup")
+
+
+# execute migrations script before installation
+try:
+    console.info("invoking migrations")
+    subprocess.check_call(["python", "migrations.py"])
+except subprocess.CalledProcessError as err:
+    console.error("migrations exited with an error: %s" % err)
 
 
 def get_requirements():
@@ -38,7 +50,6 @@ setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4"
     ],
@@ -50,3 +61,4 @@ setup(
         ]
     }
 )
+

@@ -1,3 +1,4 @@
+import getpass
 import json
 import os
 import subprocess
@@ -46,10 +47,18 @@ class Console:
             return input("> ")
 
     def get_input(self, question):
+        '''Prompt for single-line input from user, using the question.
+
+        Returns the input data if entered.
+        Returns None if no data was entered.'''
         self.info(question + "?")
-        return self.__input()
+        return self.__input() or None
 
     def get_long_input(self, question):
+        '''Prompt for multi-line input from user, using the question.
+
+        Returns a string, if input was entered.
+        Returns None if no data was entered.'''
         self.info(question + "?")
         user_input = []
         while 1:
@@ -60,7 +69,15 @@ class Console:
                 user_input.append(words)
             except KeyboardInterrupt:
                 break
-        return '\n'.join(user_input)
+        return '\n'.strip().join(user_input) or None
+
+    def get_password(self, prompt="password (leave blank for NO password): "):
+        '''Prompt for password, using prompt as question.
+
+        Input is hidden from view.
+        Returns a string.'''
+        self.info(prompt, newline=False)
+        return getpass.getpass(prompt="") or None
 
 
 class GUI:
@@ -68,8 +85,9 @@ class GUI:
         '''Opens an external editor for editing. Returns entered
         contents once editor is closed.
 
-        Throws subprocess.CalledProcessError when executing the editor
-        executable.'''
+        Throws subprocess.CalledProcessError if the editor errors.
+        Returns a string, if content could be retrieved.
+        Returns None if no content could be retrieved.'''
         filename = ".remindme-" + str(uuid.uuid4())
         filepath = os.path.join(tempfile.gettempdir(), filename)
         # if editing old content, add it to the file before opening an
@@ -78,9 +96,15 @@ class GUI:
             with open(filepath, "w") as f:
                 f.write(content)
         subprocess.check_call([editor, filepath])
-        with open(filepath) as f:
-            content = f.read()
-        os.unlink(filepath)
+        try:
+            with open(filepath) as f:
+                content = f.read()
+            os.unlink(filepath)
+        except:
+            # the user might have decided to quit
+            # or maybe their editor failed etc.
+            # it's up to the callee to react to empty content
+            pass
         return content
 
 
