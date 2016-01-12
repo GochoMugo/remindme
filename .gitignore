@@ -3,3 +3,10 @@ _site/
 
 # cache for sass compiler
 .sass-cache/
+
+
+# remindme :: pip output
+remindme/
+remindme.egg-info/
+dist/
+build/
