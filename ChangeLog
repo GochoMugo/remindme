@@ -1,3 +1,7 @@
+Version 0.5.1
+---------------
+= Fix error while updating plain-text remindmes
+
 Version 0.5.0
 ---------------
 + Add encryption
