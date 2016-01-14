@@ -69,7 +69,7 @@ class RemindmeRepository:
         '''Updates a remindme in this repository.'''
         try:
             sql = "UPDATE remindmes SET content=?, salt=? WHERE title=?;"
-            self.__cursor.execute(sql, (sqlite3.Binary(remindme.get_content()), sqlite3.Binary(remindme.get_salt()), remindme.get_title(),))
+            self.__cursor.execute(sql, (sqlite3.Binary(remindme.get_content() or ''), sqlite3.Binary(remindme.get_salt() or ''), remindme.get_title(),))
             self.__db.commit()
             return True
         except Exception as err:
