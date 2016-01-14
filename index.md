@@ -7,9 +7,8 @@ permalink: /
 
 {{ site.description }}
 
-|version|0.5.0|
-|python|2.7, 3.3, 3.4|
-|last upgrade|13th January, 2016|
+|version|[![pypi version](https://img.shields.io/pypi/v/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme)|
+|python|[![python versions](https://img.shields.io/pypi/pyversions/remindme.svg?style=flat-square)](https://pypi.python.org/pypi/remindme)|
 
 * [why use remindme](#why)
 * [see it work](#work)
