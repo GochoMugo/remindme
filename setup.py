@@ -11,11 +11,11 @@ console = remindme.utils.Console("setup")
 
 
 # execute migrations script before installation
-try:
-    console.info("invoking migrations")
-    subprocess.check_call(["python", "migrations.py"])
-except subprocess.CalledProcessError as err:
-    console.error("migrations exited with an error: %s" % err)
+#try:
+#    console.info("invoking migrations")
+#    subprocess.check_call(["python", "migrations.py"])
+#except subprocess.CalledProcessError as err:
+#    console.error("migrations exited with an error: %s" % err)
 
 
 def get_requirements():
