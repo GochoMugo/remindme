@@ -192,7 +192,7 @@ really exists with me.')
 
     if args['remove_all']:
         confirm = console.get_input("remove All Remindmes(yes/NO)")
-        if confirm.strip().lower() != "yes":
+        if confirm is None or confirm.strip().lower() != "yes":
              return console.error("removal cancelled")
         if repository.remove_remindmes():
             console.success('removed all of them')
