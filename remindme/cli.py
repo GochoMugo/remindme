@@ -65,6 +65,7 @@ def run():
     '''Run the command-line runner.'''
     args = arg_parser()
     settings = utils.Settings.read()
+    console.configure(settings)
     retry_decryption = settings.get("retry_decryption", config.USER_SETTINGS["retry_decryption"])
 
     def try_decrypt(remindme):

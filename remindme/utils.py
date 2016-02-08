@@ -11,8 +11,12 @@ from . import config
 class Console:
     template = "{color}[{title}]: {message}" + config.COLORS["reset"]
 
-    def __init__(self, title):
+    def __init__(self, title, config={}):
         self.title = title
+        self.configure(config)
+
+    def configure(self, config):
+        self.config = config
 
     def raw(self, message):
         sys.stdout.write(message)
@@ -64,7 +68,7 @@ class Console:
         while 1:
             try:
                 words = self.__input()
-                if words == ':end':
+                if words == self.config.get("end_line", config.USER_SETTINGS["end_line"]):
                     break
                 user_input.append(words)
             except KeyboardInterrupt:
@@ -123,6 +127,8 @@ class Settings:
 
     @staticmethod
     def read():
+        if Settings.config:
+            return Settings.config
         if os.path.isfile(config.PATHS["config_file"]):
             with open(config.PATHS["config_file"]) as config_file:
                 content = config_file.read()

@@ -41,3 +41,4 @@ USER_SETTINGS["disable_encryption"] = False
 USER_SETTINGS["encrypt_by_default"] = True
 USER_SETTINGS["retry_password_match"] = True
 USER_SETTINGS["retry_decryption"] = False
+USER_SETTINGS["end_line"] = ":end"
