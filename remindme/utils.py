@@ -69,7 +69,7 @@ class Console:
                 user_input.append(words)
             except KeyboardInterrupt:
                 break
-        return '\n'.strip().join(user_input) or None
+        return '\n'.join(user_input) or None
 
     def get_password(self, prompt="password (leave blank for NO password): "):
         '''Prompt for password, using prompt as question.
