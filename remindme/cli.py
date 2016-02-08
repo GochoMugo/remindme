@@ -65,6 +65,26 @@ def run():
     '''Run the command-line runner.'''
     args = arg_parser()
     settings = utils.Settings.read()
+    retry_decryption = settings.get("retry_decryption", config.USER_SETTINGS["retry_decryption"])
+
+    def try_decrypt(remindme):
+        if not remindme.is_encrypted():
+            return remindme.get_content()
+
+        content = None
+        while 1:
+            password = None
+            try:
+                password = get_password()
+            except KeyboardInterrupt:
+                return content
+            content = remindme.get_content(password=password)
+            if content is None:
+                console.error("could not decrypt text")
+            else:
+                return content
+            if retry_decryption is False:
+                return content
 
     def get_password(retry=False):
         # determining whether to ask for a password based on need to encrypt
@@ -154,11 +174,9 @@ def run():
             console.error("you need to set an external editor for editing existing remindmes")
             return
         # editing encrypted content
-        password = get_password() if remindme.is_encrypted() else None
-        content = remindme.get_content(password=password)
+        content = try_decrypt(remindme)
         if content is None:
-            console.error("could not decrypt text")
-            return
+            return 1
         content = gui.editor(settings["editor"], content=content)
         # update content, only if we got some content
         if content:
@@ -205,11 +223,9 @@ really exists with me.')
         remindme = repository.find_by_title(title)
         if remindme:
             console.success('Reminding you:')
-            password = console.get_password() if remindme.is_encrypted() else None
-            content = remindme.get_content(password=password)
+            content = try_decrypt(remindme)
             if content is None:
-                console.error("could not decrypt text")
-                return
+                return 1
             lines = content.split("\n")
             number = 0
             for line in lines:
@@ -217,7 +233,7 @@ really exists with me.')
                 console.raw("%-2d %s\n" % (number, line))
         else:
             console.error('I too can\'t remember that')
-
+    return 0
 
 if __name__ == '__main__':
-    run()
+    sys.exit(run())
