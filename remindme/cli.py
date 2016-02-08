@@ -66,10 +66,11 @@ def run():
     args = arg_parser()
     settings = utils.Settings.read()
 
-    def get_password():
+    def get_password(retry=False):
         # determining whether to ask for a password based on need to encrypt
         encryption_disabled = settings.get("disable_encryption", config.USER_SETTINGS["disable_encryption"])
         encrypt_by_default = settings.get("encrypt_by_default", config.USER_SETTINGS["encrypt_by_default"])
+        retry_password = retry and settings.get("retry_password_match", config.USER_SETTINGS["retry_password_match"])
         encryption_requested = args["encrypt"] or False
         plaintext_requested = args["plain"] or False
         password = None
@@ -81,10 +82,10 @@ def run():
 
         # if encryption has been requested
         if encryption_requested:
-            password = console.get_password()
+            password = console.get_password(retry=retry_password)
         # if encryption is by default and plaintext has not been requested
         elif encrypt_by_default and not plaintext_requested:
-            password = console.get_password()
+            password = console.get_password(retry=retry_password)
 
         # warn the user that no password was captured, if the case is so
         if password is None:
@@ -135,7 +136,7 @@ def run():
             console.error("We have nothing to save!")
             return
 
-        password = get_password()
+        password = get_password(retry=True)
         if repository.create_remindme(title, content, password=password):
             console.success('Remindme will remind you next time.')
         else:
@@ -153,7 +154,7 @@ def run():
             console.error("you need to set an external editor for editing existing remindmes")
             return
         # editing encrypted content
-        password = console.get_password() if remindme.is_encrypted() else None
+        password = get_password() if remindme.is_encrypted() else None
         content = remindme.get_content(password=password)
         if content is None:
             console.error("could not decrypt text")

@@ -71,13 +71,23 @@ class Console:
                 break
         return '\n'.join(user_input) or None
 
-    def get_password(self, prompt="password (leave blank for NO password): "):
+    def get_password(self, prompt="password (leave blank for NO password): ",
+                     prompt2="re-enter password: ", retry=False):
         '''Prompt for password, using prompt as question.
 
         Input is hidden from view.
         Returns a string.'''
+        password = None
         self.info(prompt, newline=False)
-        return getpass.getpass(prompt="") or None
+        password = getpass.getpass(prompt="") or None
+        if retry is True:
+            # retry till user enters correct password
+            self.info(prompt2, newline=False)
+            password2 = getpass.getpass(prompt="") or None
+            if password != password2:
+                self.error("passwords do not match")
+                return self.get_password(prompt=prompt, prompt2=prompt2, retry=retry)
+        return password
 
 
 class GUI:
