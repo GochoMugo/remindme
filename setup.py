@@ -7,7 +7,7 @@ import remindme
 import subprocess
 
 
-console = remindme.utils.Console("setup")
+# console = remindme.utils.Console("setup")
 
 
 # execute migrations script before installation
