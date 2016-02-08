@@ -126,3 +126,18 @@ class RemindmeRepository:
 
     def count(self):
         return len(self.get_remindmes())
+
+    @staticmethod
+    def titles_in_order(remindmes):
+        titles = [r.get_title() for r in remindmes]
+        titles.sort()
+        return titles
+
+    def find_at_index(self, index):
+        '''Find a remindme at index.
+
+        Uses one-based indexing.
+        Throws ValueError if index can not be cast to an integer.'''
+        index = int(index) - 1
+        titles = self.titles_in_order(self.get_remindmes())
+        return self.find_by_title(titles[index]) if index < len(titles) else None

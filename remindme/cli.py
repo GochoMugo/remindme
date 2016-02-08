@@ -52,6 +52,9 @@ def arg_parser():
     parser.add_argument('-p', '--plain',
                         action='store_true',
                         help='store as plain text')
+    parser.add_argument('-n', '--index',
+                        action='store_true',
+                        help='use title as index in list')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {0}'.format(config.__version__))
@@ -70,7 +73,7 @@ def run():
 
     def try_decrypt(remindme):
         if not remindme.is_encrypted():
-            return remindme.get_content()
+            return remindme.get_content(), None
 
         content = None
         while 1:
@@ -78,14 +81,14 @@ def run():
             try:
                 password = get_password()
             except KeyboardInterrupt:
-                return content
+                return content, None
             content = remindme.get_content(password=password)
             if content is None:
                 console.error("could not decrypt text")
             else:
-                return content
+                return content, password
             if retry_decryption is False:
-                return content
+                return content, None
 
     def get_password(retry=False):
         # determining whether to ask for a password based on need to encrypt
@@ -114,6 +117,16 @@ def run():
 
         return password
 
+    def get_remindme(title):
+        if args['index']:
+            try:
+                return repository.find_at_index(title)
+            except ValueError:
+                console.error("index provided is not an integer")
+                return None
+        else:
+            return repository.find_by_title(title)
+
     if args['list']:
         if args['keywords']:
             # searching using a phrase
@@ -121,8 +134,7 @@ def run():
             remindmes = repository.find(lambda r: r.get_title().startswith(phrase))
         else:
             remindmes = repository.get_remindmes()
-        titles = [r.get_title() for r in remindmes]
-        titles.sort()
+        titles = repository.titles_in_order(remindmes)
         num = len(titles)
         console.success('Found {0} remindmes'.format(num))
         if num == 0:
@@ -166,7 +178,7 @@ def run():
 
     if args['edit']:
         title = ' '.join(args['edit'])
-        remindme = repository.find_by_title(title)
+        remindme = get_remindme(title)
         if not remindme:
             console.error("no such remindme exists")
             return
@@ -175,7 +187,7 @@ def run():
             console.error("you need to set an external editor for editing existing remindmes")
             return
         # editing encrypted content
-        content = try_decrypt(remindme)
+        content, password = try_decrypt(remindme)
         if content is None:
             return 1
         content = gui.editor(settings["editor"], content=content)
@@ -203,7 +215,7 @@ Maybe there is already another remindme with the same title.')
 
     if args['remove']:
         title = ' '.join(args['remove'])
-        remindme = repository.find_by_title(title)
+        remindme = get_remindme(title)
         if remindme and remindme.delete():
             console.success('remindme successfully removed')
         else:
@@ -221,10 +233,10 @@ really exists with me.')
 
     if args['keywords']:
         title = ' '.join(args['keywords'])
-        remindme = repository.find_by_title(title)
+        remindme = get_remindme(title)
         if remindme:
             console.success('Reminding you:')
-            content = try_decrypt(remindme)
+            content, __ = try_decrypt(remindme)
             if content is None:
                 return 1
             lines = content.split("\n")
