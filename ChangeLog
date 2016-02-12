@@ -1,3 +1,12 @@
+Version 0.6.0
+--------------
++ Add support for list indexing
++ Allow changing the 'end line' for built-in editor
++ Allow retrying decryption on failure
+= Fix missing newlines in output from content added using built-in editor
+= Fix error when prompt is left empty in --remove-all
+= Remove unnecessary module import ins setup file
+
 Version 0.5.2
 ---------------
 - Disable automatic migrations before installation
