@@ -10,6 +10,7 @@ permalink: /usage/
 * [reading a note](#read)
 * [editing an existing note](#edit)
 * [removing a note](#remove)
+* [using the list index](#index)
 * [removing all remindmes](#remove-all)
 * [help information](#help)
 * [version information](#version)
@@ -96,6 +97,28 @@ We may require to remove a note:
 ⇒ remindme --remove Title of The Note
 [runner]: remindme successfully removed
 {% endhighlight %}
+
+
+<a name="index"></a>
+
+### using the list index:
+
+When you list the remindmes with `--list`, they are numbered in the list
+shown. To allow faster operations, the number, here referred to as the
+**index**, can be used instead of the title. You just have to use `--index`
+to tell remindme, that it is an index.
+
+For example,
+
+{% highlight bash %}
+⇒ remindme --index --remove 2
+[runner]: remindme successfully removed
+{% endhighlight %}
+
+> **Note**: These indices **change** with additions and removal of other notes since
+> the list is kept ordered alphabetically. Do **not** assume a remindme has the
+> same index, without checking first.
+
 
 <a name="remove-all"></a>
 
