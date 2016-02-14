@@ -11,4 +11,4 @@ author_name: GochoMugo
 author_url: https://github.com/GochoMugo
 
 markdown: kramdown
-highlighter: pygments
+highlighter: rouge
