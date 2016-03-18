@@ -19,7 +19,7 @@ def arg_parser():
     '''Argument Parser.'''
     parser = argparse.ArgumentParser(
         description='Reminds you of something you knew before',
-        epilog="See LICENSE at {0}".format(config.LICENSE)
+        epilog="See LICENSE at {0}".format(config.METADATA.LICENSE)
     )
     parser.add_argument('keywords',
                         metavar='TITLE', nargs='*',
@@ -57,7 +57,7 @@ def arg_parser():
                         help='use title as index in list')
     parser.add_argument('-v', '--version',
                         action='version',
-                        version='%(prog)s {0}'.format(config.__version__))
+                        version='%(prog)s {0}'.format(config.METADATA.__version__))
 
     args = parser.parse_args()
     args = vars(args)

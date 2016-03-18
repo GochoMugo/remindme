@@ -1,11 +1,11 @@
 import os
 import sys
 import colorama
+from . import metadata
 
 
 # project metadata
-__version__ = "0.6.0"
-LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
+METADATA = metadata
 
 
 # paths

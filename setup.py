@@ -3,8 +3,8 @@ Setup script for RemindMe
 '''
 
 from setuptools import setup
-import remindme
-import subprocess
+import remindme.metadata as metadata
+# import subprocess
 
 
 # console = remindme.utils.Console("setup")
@@ -28,7 +28,7 @@ def get_requirements():
 
 setup(
     name="remindme",
-    version=remindme.__version__,
+    version=metadata.__version__,
     author="Gocho Mugo I",
     author_email="mugo@forfuture.co.ke",
     author_url="https://gochomugo.github.io/",
@@ -37,7 +37,7 @@ setup(
     description="Command Line Application for reminding you of something",
     keywords=["remindme", "remind", "remember", "cli"],
     license="MIT",
-    long_description=remindme.__doc__,
+    long_description=metadata.__doc__,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
@@ -61,4 +61,3 @@ setup(
         ]
     }
 )
-
