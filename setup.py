@@ -3,7 +3,9 @@ Setup script for RemindMe
 '''
 
 from setuptools import setup
-import remindme.metadata as metadata
+import sys
+sys.path.append("remindme/")
+import metadata
 # import subprocess
 
 

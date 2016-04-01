@@ -1,3 +1,8 @@
+Unreleased
+--------------
+= Fix import errors occurring during install, with pip
+  The last fix was a poop!
+
 Version 0.6.1
 --------------
 = Fix import errors occurring during install, with pip
