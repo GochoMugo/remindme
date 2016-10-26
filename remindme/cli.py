@@ -39,6 +39,9 @@ def arg_parser():
                         metavar='title',
                         dest='in', nargs='+',
                         help='pipe-in input for a new remindme')
+    parser.add_argument('-o', '--raw',
+                        action='store_true',
+                        help='provide unformatted output; suitable for piping')
     parser.add_argument('-r', '--remove',
                         metavar='title',
                         dest='remove', nargs='+',
@@ -235,10 +238,15 @@ really exists with me.')
         title = ' '.join(args['keywords'])
         remindme = get_remindme(title)
         if remindme:
-            console.success('Reminding you:')
             content, __ = try_decrypt(remindme)
             if content is None:
+                console.error('empty remindme content')
                 return 1
+            # if we are to spit out unmodified content
+            if args['raw']:
+                console.raw(content)
+                return 0
+            console.success('Reminding you:')
             lines = content.split("\n")
             number = 0
             for line in lines:
