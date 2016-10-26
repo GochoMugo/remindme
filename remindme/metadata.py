@@ -12,5 +12,5 @@ Contribute to the Project at https://github.com/GochoMugo/remindme
 
 
 # project metadata
-__version__ = "0.6.2"
+__version__ = "0.7.0"
 LICENSE = "https://github.com/GochoMugo/remindme/blob/master/LICENSE"
