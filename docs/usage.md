@@ -75,6 +75,19 @@ Reading a note is even simpler:
 4 several lines
 {% endhighlight %}
 
+If you want to get the raw, unmodified content
+without colors, status information, etc.,
+use the `-o/--raw` flag. This is useful when you want to
+pipe the content to some other process.
+
+{% highlight bash %}
+⇒ remindme Title of The Note --raw
+This is some content of the note
+
+You can keep entering content over
+several lines
+{% endhighlight %}
+
 
 <a name="edit"></a>
 
