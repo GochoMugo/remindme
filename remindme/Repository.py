@@ -1,12 +1,12 @@
 '''
-A RemindmeRepository is a Repository for storing and retrieving Remindmes.
+A Repository is a Repository for storing and retrieving Remindmes.
 '''
 
 import sqlite3
 from .Remindme import Remindme
 
 
-class RemindmeRepository:
+class Repository:
     '''Repository of Remindmes.'''
 
     def __init__(self, db_file, key=None):

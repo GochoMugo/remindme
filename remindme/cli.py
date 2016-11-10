@@ -6,13 +6,13 @@ import argparse
 import sys
 from . import config
 from . import utils
-from .RemindmeRepository import RemindmeRepository
+from .Repository import Repository
 
 
 # start-up activities
 console = utils.Console("runner")
 gui = utils.GUI()
-repository = RemindmeRepository(config.PATHS["db_file"])
+repository = Repository(config.PATHS["db_file"])
 
 
 def arg_parser():
