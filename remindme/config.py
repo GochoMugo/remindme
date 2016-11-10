@@ -37,6 +37,7 @@ CRYPTO["kdf_length"] = 32
 
 # default user settings
 USER_SETTINGS = {}
+USER_SETTINGS["editor"] = None
 USER_SETTINGS["disable_encryption"] = False
 USER_SETTINGS["encrypt_by_default"] = True
 USER_SETTINGS["retry_password_match"] = True

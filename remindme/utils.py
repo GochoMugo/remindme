@@ -11,12 +11,9 @@ from . import config
 class Console:
     template = "{color}[{title}]: {message}" + config.COLORS["reset"]
 
-    def __init__(self, title, config={}):
+    def __init__(self, title, settings):
         self.title = title
-        self.configure(config)
-
-    def configure(self, config):
-        self.config = config
+        self.settings = settings
 
     def raw(self, message):
         sys.stdout.write(message)
@@ -68,7 +65,7 @@ class Console:
         while 1:
             try:
                 words = self.__input()
-                if words == self.config.get("end_line", config.USER_SETTINGS["end_line"]):
+                if words == self.settings.get("end_line"):
                     break
                 user_input.append(words)
             except KeyboardInterrupt:
@@ -99,7 +96,7 @@ class GUI:
         '''Opens an external editor for editing. Returns entered
         contents once editor is closed.
 
-        Throws subprocess.CalledProcessError if the editor errors.
+        Throws EditorError if the editor errors.
         Returns a string, if content could be retrieved.
         Returns None if no content could be retrieved.'''
         filename = ".remindme-" + str(uuid.uuid4())
@@ -109,7 +106,10 @@ class GUI:
         if content:
             with open(filepath, "w") as f:
                 f.write(content)
-        subprocess.check_call([editor, filepath])
+        try:
+            subprocess.check_call([editor, filepath])
+        except subprocess.CalledProcessError:
+            raise EditorError()
         try:
             with open(filepath) as f:
                 content = f.read()
@@ -123,21 +123,35 @@ class GUI:
 
 
 class Settings:
-    config = {}
-
-    @staticmethod
-    def read():
-        if Settings.config:
-            return Settings.config
+    def __init__(self):
+        self.config = {}
         if os.path.isfile(config.PATHS["config_file"]):
             with open(config.PATHS["config_file"]) as config_file:
                 content = config_file.read()
                 content = json.loads(content)
-                Settings.config = content
-        return Settings.config
+                self.config = content
 
-    @staticmethod
+    def get(self, key):
+        # the above implementation, avoids looking up the defaults
+        # if the user-defined value has been provided
+        # return self.config.get(key, config.USER_SETTINGS[key])
+        user_defined = self.config.get(key, None)
+        if user_defined:
+            return user_defined
+        return config.USER_SETTINGS[key]
+
+    def set(self, key, value):
+        self.config[key] = value
+        return value
+
     def write():
-        content = json.dumps(Settings.config, sort_keys=True, indent=4)
+        content = json.dumps(self.config, sort_keys=True, indent=4)
         with open(config.PATHS["config_file"], "w") as config_file:
             config_file.write(content)
+
+
+class DecryptionError(Exception):
+    pass
+
+class EditorError(Exception):
+    pass
