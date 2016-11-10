@@ -1,3 +1,9 @@
+Version 0.8.0
+--------------
++ Allow renaming a remindme
++ Easen argument passing and parsing
+= Codebase updated
+
 Version 0.7.0
 --------------
 + Allow getting raw output
