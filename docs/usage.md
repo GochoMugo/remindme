@@ -9,7 +9,7 @@ permalink: /usage/
 * [listing notes](#list)
 * [reading a note](#read)
 * [editing an existing note](#edit)
-* [renaming a node](#rename)
+* [renaming a note](#rename)
 * [removing a note](#remove)
 * [using the list index](#index)
 * [removing all remindmes](#remove-all)
