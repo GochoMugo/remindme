@@ -28,23 +28,19 @@ def arg_parser():
                         action='store_true',
                         help='list all remindme titles')
     parser.add_argument('-a', '--add',
-                        metavar='title',
-                        dest='add', nargs='+',
+                        action='store_true',
                         help='add new remindme')
     parser.add_argument('-e', '--edit',
-                        metavar='title',
-                        dest='edit', nargs='+',
+                        action='store_true',
                         help='edit old remindme')
     parser.add_argument('-i', '--in',
-                        metavar='title',
-                        dest='in', nargs='+',
+                        action='store_true',
                         help='pipe-in input for a new remindme')
     parser.add_argument('-o', '--raw',
                         action='store_true',
                         help='provide unformatted output; suitable for piping')
     parser.add_argument('-r', '--remove',
-                        metavar='title',
-                        dest='remove', nargs='+',
+                        action='store_true',
                         help='remove a remindme')
     parser.add_argument('-Ra', '--remove-all',
                         action='store_true',
@@ -73,6 +69,7 @@ def run():
     settings = utils.Settings.read()
     console.configure(settings)
     retry_decryption = settings.get("retry_decryption", config.USER_SETTINGS["retry_decryption"])
+    remindme_title = ' '.join(args['keywords']) or None
 
     def try_decrypt(remindme):
         if not remindme.is_encrypted():
@@ -131,10 +128,8 @@ def run():
             return repository.find_by_title(title)
 
     if args['list']:
-        if args['keywords']:
-            # searching using a phrase
-            phrase = ' '.join(args['keywords'])
-            remindmes = repository.find(lambda r: r.get_title().startswith(phrase))
+        if remindme_title:
+            remindmes = repository.find(lambda r: r.get_title().startswith(remindme_title))
         else:
             remindmes = repository.get_remindmes()
         titles = repository.titles_in_order(remindmes)
@@ -150,12 +145,17 @@ def run():
         console.raw(display_content)
         return
 
+    # from here on, we require that the keywords have
+    # been provided. Otherwise, exit early
+    if not remindme_title:
+        console.error("Title of remindme has not been provided")
+        return 1
+
     if args['add']:
-        title = ' '.join(args['add'])
-        results = repository.find_by_title(title)
+        results = repository.find_by_title(remindme_title)
         if results:
             console.error("A remindme already has that title")
-            return
+            return 1
         # use editor if available, otherwise use console
         if settings.get("editor", None):
             try:
@@ -163,7 +163,7 @@ def run():
             except Exception as err:
                 console.error("External editor (%s) exited with a non-zero status code" % (settings["editor"]))
                 console.error(str(err))
-                return
+                return 1
         else:
             message = "Enter what you remember now"
             content = console.get_long_input(message)
@@ -173,15 +173,14 @@ def run():
             return
 
         password = get_password(retry=True)
-        if repository.create_remindme(title, content, password=password):
+        if repository.create_remindme(remindme_title, content, password=password):
             console.success('Remindme will remind you next time.')
         else:
             console.error('Remindme failed to get that in memory.')
         return
 
     if args['edit']:
-        title = ' '.join(args['edit'])
-        remindme = get_remindme(title)
+        remindme = get_remindme(remindme_title)
         if not remindme:
             console.error("no such remindme exists")
             return
@@ -204,26 +203,26 @@ def run():
         return
 
     if args['in']:
-        title = ' '.join(args['in'])
         content = sys.stdin.read().strip()
         if content is '':
             console.error('Remindme got no data!')
         else:
             password = get_password()
-            if repository.create_remindme(title, content, password=password):
+            if repository.create_remindme(remindme_title, content, password=password):
                 console.success('Remindme will remind you next time')
             else:
                 console.error('Remindme failed to get that in memory.\n\
 Maybe there is already another remindme with the same title.')
+        return
 
     if args['remove']:
-        title = ' '.join(args['remove'])
-        remindme = get_remindme(title)
+        remindme = get_remindme(remindme_title)
         if remindme and remindme.delete():
             console.success('remindme successfully removed')
         else:
             console.error('Remindme can not remove that. Check if the remindme \
 really exists with me.')
+        return
 
     if args['remove_all']:
         confirm = console.get_input("remove All Remindmes(yes/NO)")
@@ -233,10 +232,12 @@ really exists with me.')
             console.success('removed all of them')
         else:
             console.error('failed to remove all')
+        return
 
-    if args['keywords']:
-        title = ' '.join(args['keywords'])
-        remindme = get_remindme(title)
+    # the fallback action, when only a title of a
+    # remindme has been provided.
+    if remindme_title:
+        remindme = get_remindme(remindme_title)
         if remindme:
             content, __ = try_decrypt(remindme)
             if content is None:
