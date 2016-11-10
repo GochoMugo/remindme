@@ -77,6 +77,18 @@ class RemindmeRepository:
             self.__db.rollback()
             return False
 
+    def rename_remindme(self, remindme, title):
+        '''Renames the title of a remindme in this repository.'''
+        try:
+            sql = 'UPDATE remindmes SET title=? WHERE title=?;'
+            self.__cursor.execute(sql, (title, remindme.get_title()))
+            self.__db.commit()
+            return True
+        except Exception as err:
+            print err
+            self.__db.rollback()
+            return False
+
     def remove_remindme(self, remindme):
         '''Remove remindme from this repository.'''
         if remindme in self.__deleted_remindmes:

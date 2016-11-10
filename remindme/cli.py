@@ -39,6 +39,9 @@ def arg_parser():
     parser.add_argument('-o', '--raw',
                         action='store_true',
                         help='provide unformatted output; suitable for piping')
+    parser.add_argument('-b', '--rename',
+                        metavar='new_title', nargs='+',
+                        help='rename a remindme')
     parser.add_argument('-r', '--remove',
                         action='store_true',
                         help='remove a remindme')
@@ -214,6 +217,18 @@ def run():
                 console.error('Remindme failed to get that in memory.\n\
 Maybe there is already another remindme with the same title.')
         return
+
+    if args['rename']:
+        new_title = ' '.join(args['rename'])
+        remindme = get_remindme(remindme_title)
+        if not remindme:
+            console.error('No such remindme to rename')
+            return 1
+        if not remindme.set_title(new_title):
+            console.error('Remindme could not be renamed')
+            return 1
+        console.success('Remindme renamed successfully')
+        return 0
 
     if args['remove']:
         remindme = get_remindme(remindme_title)

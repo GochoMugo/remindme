@@ -29,6 +29,7 @@ class Remindme:
 
     def set_title(self, title):
         '''Set title of this remindme.'''
+        self.__repository.rename_remindme(self, title)
         self.__title = title
         return self
 
