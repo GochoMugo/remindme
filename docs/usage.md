@@ -9,6 +9,7 @@ permalink: /usage/
 * [listing notes](#list)
 * [reading a note](#read)
 * [editing an existing note](#edit)
+* [renaming a node](#rename)
 * [removing a note](#remove)
 * [using the list index](#index)
 * [removing all remindmes](#remove-all)
@@ -97,6 +98,17 @@ Editing an existing note is simple too. Although [we need an external editor]({{
 
 {% highlight bash %}
 ⇒ remindme --edit Title of The Note
+{% endhighlight %}
+
+
+<a name="rename"></a>
+
+### renaming a note:
+
+A simple format for this command would be:
+
+{% highlight bash %}
+⇒ remindme old title --rename new title
 {% endhighlight %}
 
 
